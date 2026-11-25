@@ -1,0 +1,2635 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>آرسان استودیو | ARSAN STUDIO — طراحی وب‌سایت‌های لوکس و محصولات دیجیتال</title>
+    <meta name="description" content="آرسان استودیو؛ طراحی رابط کاربری، فروشگاه‌های اینترنتی پرسرعت، داشبوردهای مدیریتی و وب‌سایت‌های شرکتی تراز اول با استاندارد جهانی.">
+
+    <!-- فونت فارسی Vazirmatn با تمامی وزن‌های استاندارد -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- بارگذاری Tailwind CSS و تعریف دقیق پالت آبی نفتی، طوسی معماری و سفید -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Vazirmatn', 'system-ui', '-apple-system', 'sans-serif'],
+                    },
+                    colors: {
+                        petrol: {
+                            deep: '#082032',
+                            rich: '#0B3954',
+                            mid: '#125073',
+                            sky: '#38BDF8',
+                        },
+                        slatearch: {
+                            bg: '#F4F6F8',
+                            border: '#E2E8F0',
+                            muted: '#94A3B8',
+                            body: '#475569',
+                            dark: '#1E293B',
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 35px -10px rgba(8, 32, 50, 0.08)',
+                        'elevated': '0 24px 60px -15px rgba(8, 32, 50, 0.14)',
+                        'petrol': '0 22px 50px -12px rgba(8, 32, 50, 0.42)',
+                        'sky-glow': '0 0 28px -4px rgba(56, 189, 248, 0.42)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- استایل‌های سفارشی برای انیمیشن‌ها، افکت شیشه‌ای، مارکی، سه‌بعدی و آکاردئون -->
+    <style>
+        :root {
+            --petrol-deep: #082032;
+            --petrol-rich: #0B3954;
+            --petrol-mid: #125073;
+            --petrol-sky: #38BDF8;
+            --surface-gray: #F4F6F8;
+            --border-gray: #E2E8F0;
+            --text-muted: #94A3B8;
+            --text-body: #475569;
+            --text-dark: #1E293B;
+        }
+
+        html, body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #FFFFFF;
+            color: #1E293B;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* نوار پیشرفت اسکرول در بالای صفحه */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 3px;
+            width: 0%;
+            background: linear-gradient(270deg, #0B3954 0%, #125073 50%, #38BDF8 100%);
+            z-index: 100;
+            transition: width 0.08s linear;
+        }
+
+        /* ناوبری شیشه‌ای (Glassmorphism) */
+        .glass-header {
+            background: rgba(8, 32, 50, 0.72);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .glass-header.is-scrolled {
+            background: rgba(255, 255, 255, 0.90);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+            box-shadow: 0 12px 32px -8px rgba(8, 32, 50, 0.08);
+        }
+
+        /* پس‌زمینه معماری و شبکه دقیق بخش هیرو */
+        .hero-surface {
+            background: radial-gradient(circle at 80% 18%, rgba(18, 80, 115, 0.45) 0%, transparent 45%),
+                        radial-gradient(circle at 18% 82%, rgba(56, 189, 248, 0.12) 0%, transparent 40%),
+                        linear-gradient(155deg, #082032 0%, #0B3954 62%, #082032 100%);
+        }
+        .architect-grid {
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 52px 52px;
+        }
+
+        /* افکت سه‌بعدی ماکاپ هیرو */
+        .tilt-stage {
+            perspective: 1400px;
+        }
+        .tilt-shell {
+            transform-style: preserve-3d;
+            transition: transform 0.22s ease-out;
+            will-change: transform;
+        }
+        .tilt-pop {
+            transform: translateZ(34px);
+        }
+
+        /* انیمیشن رسم نمودار Sparkline */
+        @keyframes drawLine {
+            from { stroke-dashoffset: 480; }
+            to { stroke-dashoffset: 0; }
+        }
+        .sparkline-path {
+            stroke-dasharray: 480;
+            stroke-dashoffset: 480;
+            animation: drawLine 2.1s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.35s;
+        }
+
+        /* شناوری نرم کارت‌های شیشه‌ای هیرو */
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px) translateZ(42px); }
+            50% { transform: translateY(-7px) translateZ(42px); }
+        }
+        .float-card {
+            animation: gentleFloat 5.2s ease-in-out infinite;
+        }
+
+        /* مارکی بی‌نهایت فناوری‌ها و قابلیت‌ها */
+        @keyframes marqueeRun {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marqueeRun 34s linear infinite;
+        }
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        /* افکت نور دنبال‌کننده ماوس (Spotlight) روی کارت‌های بنتو */
+        .bento-spotlight {
+            position: relative;
+            overflow: hidden;
+            --mx: 50%;
+            --my: 50%;
+        }
+        .bento-spotlight::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                520px circle at var(--mx) var(--my),
+                rgba(11, 57, 84, 0.09),
+                rgba(56, 189, 248, 0.06) 28%,
+                transparent 52%
+            );
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .bento-spotlight.dark-bento::before {
+            background: radial-gradient(
+                520px circle at var(--mx) var(--my),
+                rgba(56, 189, 248, 0.24),
+                transparent 52%
+            );
+        }
+        .bento-spotlight:hover::before {
+            opacity: 1;
+        }
+
+        /* انیمیشن ظاهر شدن عناصر هنگام اسکرول */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* انیمیشن میله‌های نمودار در کارت بنتو داشبورد */
+        @keyframes barPulse {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.72); }
+        }
+        .bar-anim {
+            transform-origin: bottom;
+            animation: barPulse 3.2s ease-in-out infinite;
+        }
+
+        /* انیمیشن دایره امتیاز ۱۰۰ گوگل لایت‌هاوس */
+        .gauge-circle {
+            stroke-dasharray: 251.2;
+            stroke-dashoffset: 251.2;
+            transition: stroke-dashoffset 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .is-visible .gauge-circle {
+            stroke-dashoffset: 0;
+        }
+
+        /* آکاردئون نرم سوالات متداول */
+        .faq-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .faq-item[data-open="true"] .faq-content {
+            grid-template-rows: 1fr;
+        }
+        .faq-item[data-open="true"] .faq-chevron {
+            transform: rotate(180deg);
+        }
+
+        /* انیمیشن ورود پنل روند کار و مودال */
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-slide-up {
+            animation: fadeSlideUp 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        /* اسلایدر مقایسه قبل و بعد */
+        .ba-container {
+            touch-action: pan-y;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* اسکرول‌بار اختصاصی هماهنگ با تم */
+        ::-webkit-scrollbar {
+            width: 9px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F4F6F8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94A3B8;
+            border-radius: 999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0B3954;
+        }
+    </style>
+</head>
+<body class="selection:bg-petrol-rich selection:text-white">
+
+    <!-- نوار پیشرفت اسکرول بالای صفحه -->
+    <div id="scroll-progress" aria-hidden="true"></div>
+
+    <!-- =========================================================================
+         ۱. نوار ناوبری شیشه‌ای چسبان (Frosted Glass Sticky Navbar)
+    ========================================================================== -->
+    <header id="main-navbar" class="glass-header fixed top-0 inset-x-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="navbar-inner" class="flex items-center justify-between h-20 transition-all duration-300">
+                <!-- لوگوی مینیمال هندسی آرسان استودیو -->
+                <a href="#hero" class="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-petrol-sky rounded-xl p-1">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-petrol-mid to-petrol-deep border border-white/20 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
+                        <svg class="w-6 h-6 text-white" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                            <path d="M16 4L27 25H21.8L16 13.6L10.2 25H5L16 4Z" fill="currentColor"/>
+                            <path d="M16 19.5L19.2 25H12.8L16 19.5Z" fill="#38BDF8"/>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col leading-tight">
+                        <span id="nav-brand-fa" class="text-base sm:text-lg font-black tracking-tight text-white transition-colors duration-300">آرسان استودیو</span>
+                        <span id="nav-brand-en" class="text-[10px] font-semibold tracking-[0.2em] uppercase text-slatearch-muted transition-colors duration-300">ARSAN STUDIO</span>
+                    </div>
+                </a>
+
+                <!-- منوی دسکتاپ -->
+                <nav class="hidden lg:flex items-center gap-1" aria-label="ناوبری اصلی">
+                    <a href="#services" class="nav-link px-3.5 py-2 rounded-xl text-sm font-medium text-white/85 hover:text-white hover:bg-white/10 transition-all">خدمات</a>
+                    <a href="#portfolio" class="nav-link px-3.5 py-2 rounded-xl text-sm font-medium text-white/85 hover:text-white hover:bg-white/10 transition-all">نمونه‌کارها</a>
+                    <a href="#comparison" class="nav-link px-3.5 py-2 rounded-xl text-sm font-medium text-white/85 hover:text-white hover:bg-white/10 transition-all">مقایسه کیفیت</a>
+                    <a href="#estimator" class="nav-link px-3.5 py-2 rounded-xl text-sm font-medium text-white/85 hover:text-white hover:bg-white/10 transition-all">برآوردگر پروژه</a>
+                    <a href="#process" class="nav-link px-3.5 py-2 rounded-xl text-sm font-medium text-white/85 hover:text-white hover:bg-white/10 transition-all">روند کار</a>
+                    <a href="#faq" class="nav-link px-3.5 py-2 rounded-xl text-sm font-medium text-white/85 hover:text-white hover:bg-white/10 transition-all">سوالات متداول</a>
+                </nav>
+
+                <!-- دکمه شروع همکاری + منوی موبایل -->
+                <div class="flex items-center gap-3">
+                    <a href="#contact" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-petrol-sky hover:bg-sky-300 text-petrol-deep font-extrabold text-sm shadow-sky-glow transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0">
+                        <span>شروع همکاری</span>
+                        <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6"/>
+                        </svg>
+                    </a>
+
+                    <button id="open-mobile-menu" type="button" aria-label="باز کردن منوی موبایل" class="lg:hidden p-2.5 rounded-xl text-white hover:bg-white/10 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-petrol-sky">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- منوی کشویی موبایل (Mobile Drawer) -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-petrol-deep/70 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300 lg:hidden"></div>
+    <aside id="mobile-drawer" aria-label="منوی موبایل" class="fixed top-0 right-0 bottom-0 w-80 max-w-[86vw] bg-white z-50 translate-x-full transition-transform duration-300 ease-out shadow-2xl flex flex-col justify-between p-6 lg:hidden">
+        <div>
+            <div class="flex items-center justify-between pb-5 border-b border-slatearch-border">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-petrol-deep flex items-center justify-center text-white">
+                        <svg class="w-5 h-5" viewBox="0 0 32 32" fill="none">
+                            <path d="M16 4L27 25H21.8L16 13.6L10.2 25H5L16 4Z" fill="currentColor"/>
+                            <path d="M16 19.5L19.2 25H12.8L16 19.5Z" fill="#38BDF8"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-black text-petrol-deep text-base leading-tight">آرسان استودیو</p>
+                        <p class="text-[10px] tracking-[0.18em] text-slatearch-muted uppercase">ARSAN STUDIO</p>
+                    </div>
+                </div>
+                <button id="close-mobile-menu" type="button" aria-label="بستن منو" class="p-2 rounded-xl bg-slatearch-bg text-petrol-deep hover:bg-slatearch-border/70 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="mt-6 flex flex-col gap-1.5">
+                <a href="#services" class="mobile-link px-4 py-3 rounded-xl font-bold text-slatearch-dark hover:bg-slatearch-bg hover:text-petrol-rich transition-colors">خدمات تخصصی</a>
+                <a href="#portfolio" class="mobile-link px-4 py-3 rounded-xl font-bold text-slatearch-dark hover:bg-slatearch-bg hover:text-petrol-rich transition-colors">نمونه‌کارهای منتخب</a>
+                <a href="#comparison" class="mobile-link px-4 py-3 rounded-xl font-bold text-slatearch-dark hover:bg-slatearch-bg hover:text-petrol-rich transition-colors">مقایسه کیفیت طراحی</a>
+                <a href="#estimator" class="mobile-link px-4 py-3 rounded-xl font-bold text-slatearch-dark hover:bg-slatearch-bg hover:text-petrol-rich transition-colors">برآوردگر هوشمند پروژه</a>
+                <a href="#process" class="mobile-link px-4 py-3 rounded-xl font-bold text-slatearch-dark hover:bg-slatearch-bg hover:text-petrol-rich transition-colors">روند اجرای پروژه</a>
+                <a href="#faq" class="mobile-link px-4 py-3 rounded-xl font-bold text-slatearch-dark hover:bg-slatearch-bg hover:text-petrol-rich transition-colors">سوالات متداول</a>
+            </nav>
+        </div>
+
+        <div class="pt-5 border-t border-slatearch-border">
+            <a href="#contact" class="mobile-link flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-petrol-rich hover:bg-petrol-mid text-white font-bold shadow-petrol transition-colors">
+                <span>شروع همکاری و مشاوره</span>
+            </a>
+            <p class="mt-3 text-center text-xs text-slatearch-body">پاسخ‌گویی مستقیم در کمتر از ۲ ساعت</p>
+        </div>
+    </aside>
+
+    <!-- =========================================================================
+         ۲. بخش هیرو (Interactive Deep Petroleum Hero + 3D Tilt Device Switcher)
+    ========================================================================== -->
+    <section id="hero" class="hero-surface relative text-white pt-32 pb-28 lg:pt-36 lg:pb-36 overflow-hidden">
+        <!-- شبکه هندسی و کانواس تعاملی پس‌زمینه -->
+        <div class="absolute inset-0 architect-grid pointer-events-none"></div>
+        <canvas id="hero-constellation" class="absolute inset-0 w-full h-full pointer-events-none opacity-75"></canvas>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+                <!-- ستون راست: پیام ارزش پیشنهادی و دکمه‌های اقدام -->
+                <div class="lg:col-span-6 text-right">
+                    <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/8 border border-white/15 backdrop-blur-md mb-7">
+                        <span class="relative flex h-2.5 w-2.5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-petrol-sky opacity-80"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-petrol-sky"></span>
+                        </span>
+                        <span class="text-xs sm:text-sm font-medium text-slatearch-bg">آماده پذیرش پروژه‌های جدید</span>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-5xl lg:text-[3.35rem] font-black leading-[1.28] tracking-tight text-white">
+                        طراحی وب‌سایت‌هایی که
+                        <span class="text-transparent bg-clip-text bg-gradient-to-l from-white via-sky-100 to-petrol-sky">مشتری</span>
+                        را شگفت‌زده می‌کنند
+                    </h1>
+
+                    <p class="mt-6 text-base sm:text-lg text-slate-300 leading-relaxed max-w-xl font-normal">
+                        در <strong class="text-white font-bold">آرسان استودیو</strong>، زیبایی بصری لوکس را با مهندسی فرانت‌اند فوق‌سریع و اصول روانشناسی فروش ترکیب می‌کنیم تا وب‌سایت شما به قدرتمندترین دارایی دیجیتال برندتان تبدیل شود.
+                    </p>
+
+                    <!-- دکمه‌های تعاملی دوگانه -->
+                    <div class="mt-9 flex flex-wrap items-center gap-4">
+                        <a href="#estimator" class="inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-2xl bg-white text-petrol-deep hover:bg-slatearch-bg font-black text-sm sm:text-base shadow-xl transition-all duration-300 hover:-translate-y-0.5">
+                            <svg class="w-5 h-5 text-petrol-rich" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                            </svg>
+                            <span>محاسبه هزینه پروژه</span>
+                        </a>
+
+                        <a href="#portfolio" class="inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-2xl bg-white/10 hover:bg-white/15 text-white border border-white/15 font-bold text-sm sm:text-base backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5">
+                            <span>مشاهده نمونه‌کارها</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <!-- نشان‌های اعتماد خرد -->
+                    <div class="mt-10 pt-7 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs sm:text-sm text-slate-300">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-lg bg-petrol-sky/15 text-petrol-sky flex items-center justify-center shrink-0">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            </span>
+                            <span>امتیاز ۱۰۰ گوگل لایت‌هاوس</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-lg bg-petrol-sky/15 text-petrol-sky flex items-center justify-center shrink-0">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            </span>
+                            <span>تحویل دقیق و زمان‌بندی‌شده</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-lg bg-petrol-sky/15 text-petrol-sky flex items-center justify-center shrink-0">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            </span>
+                            <span>طراحی ۱۰۰٪ اختصاصی</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ستون چپ: ماکاپ تعاملی سه‌بعدی با سوییچ نمای دسکتاپ / موبایل -->
+                <div class="lg:col-span-6">
+                    <!-- سوییچر دستگاه بالای ماکاپ -->
+                    <div class="flex items-center justify-center lg:justify-end mb-4">
+                        <div class="inline-flex items-center p-1 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md">
+                            <button id="btn-view-desktop" type="button" onclick="switchHeroDevice('desktop')" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-white text-petrol-deep shadow-md transition-all">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                <span>نمای دسکتاپ</span>
+                            </button>
+                            <button id="btn-view-mobile" type="button" onclick="switchHeroDevice('mobile')" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-slate-200 hover:text-white transition-all">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                <span>نمای موبایل</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="tilt-stage relative">
+                        <div id="hero-tilt-shell" class="tilt-shell relative mx-auto">
+                            <!-- نمای دسکتاپ ماکاپ -->
+                            <div id="hero-desktop-view" class="rounded-3xl bg-white text-slatearch-dark border border-white/30 shadow-2xl overflow-hidden transition-all duration-500">
+                                <!-- نوار مرورگر -->
+                                <div class="bg-slatearch-bg px-5 py-3 border-b border-slatearch-border flex items-center justify-between">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+                                        <span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+                                        <span class="w-2.5 h-2.5 rounded-full bg-petrol-rich"></span>
+                                    </div>
+                                    <div class="px-3 py-1 rounded-lg bg-white border border-slatearch-border text-[11px] font-medium text-slatearch-body">
+                                        arsan-commerce.ir / dashboard
+                                    </div>
+                                    <span class="text-[11px] font-bold text-petrol-rich bg-sky-100 px-2 py-0.5 rounded-md">زنده</span>
+                                </div>
+
+                                <!-- محتوای داخلی داشبورد/فروشگاه مدرن -->
+                                <div class="p-5 sm:p-6 bg-white">
+                                    <div class="flex items-center justify-between gap-4 mb-5">
+                                        <div>
+                                            <p class="text-xs font-semibold text-slatearch-muted">نمای کلی عملکرد برند</p>
+                                            <h3 class="text-base sm:text-lg font-black text-petrol-deep">پنل هوشمند فروش و تحلیل</h3>
+                                        </div>
+                                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-petrol-deep text-white text-xs font-bold shadow-md">
+                                            <span class="w-2 h-2 rounded-full bg-petrol-sky"></span>
+                                            +۱۸۴٪ افزایش فروش
+                                        </span>
+                                    </div>
+
+                                    <!-- سه کارت متریک داخل ماکاپ -->
+                                    <div class="grid grid-cols-3 gap-3 mb-5">
+                                        <div class="rounded-2xl bg-slatearch-bg border border-slatearch-border/80 p-3">
+                                            <p class="text-[11px] text-slatearch-body font-medium">درآمد ماهانه</p>
+                                            <p class="mt-1 text-sm sm:text-base font-black text-petrol-deep">۱.۸۵ میلیارد</p>
+                                            <p class="text-[10px] font-bold text-petrol-mid mt-0.5">تومان • رشد ۴۲٪</p>
+                                        </div>
+                                        <div class="rounded-2xl bg-petrol-rich text-white p-3 shadow-md">
+                                            <p class="text-[11px] text-slate-300 font-medium">نرخ تبدیل سبد</p>
+                                            <p class="mt-1 text-sm sm:text-base font-black text-white">۶.۹۲٪</p>
+                                            <p class="text-[10px] font-bold text-petrol-sky mt-0.5">۳ برابر میانگین بازار</p>
+                                        </div>
+                                        <div class="rounded-2xl bg-slatearch-bg border border-slatearch-border/80 p-3">
+                                            <p class="text-[11px] text-slatearch-body font-medium">سرعت باز شدن</p>
+                                            <p class="mt-1 text-sm sm:text-base font-black text-petrol-deep">۰.۶ ثانیه</p>
+                                            <p class="text-[10px] font-bold text-petrol-mid mt-0.5">امتیاز ۱۰۰ گوگل</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- نمودار Sparkline SVG متحرک -->
+                                    <div class="rounded-2xl bg-petrol-deep p-4 text-white">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-xs font-bold text-slate-200">روند رشد سفارش‌های ثبت‌شده</span>
+                                            <span class="text-[11px] font-bold text-petrol-sky">۶ ماه اخیر</span>
+                                        </div>
+                                        <svg viewBox="0 0 400 115" class="w-full h-28 overflow-visible" aria-hidden="true">
+                                            <defs>
+                                                <linearGradient id="heroSparkFill" x1="0" y1="0" x2="0" y2="1">
+                                                    <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.38"/>
+                                                    <stop offset="100%" stop-color="#38BDF8" stop-opacity="0"/>
+                                                </linearGradient>
+                                            </defs>
+                                            <line x1="0" y1="28" x2="400" y2="28" stroke="rgba(255,255,255,0.07)" stroke-dasharray="4 4"/>
+                                            <line x1="0" y1="64" x2="400" y2="64" stroke="rgba(255,255,255,0.07)" stroke-dasharray="4 4"/>
+                                            <line x1="0" y1="98" x2="400" y2="98" stroke="rgba(255,255,255,0.07)" stroke-dasharray="4 4"/>
+                                            <path d="M 8 98 C 58 92, 85 68, 134 72 C 180 76, 212 38, 266 42 C 316 45, 348 18, 392 12 L 392 112 L 8 112 Z" fill="url(#heroSparkFill)"/>
+                                            <path d="M 8 98 C 58 92, 85 68, 134 72 C 180 76, 212 38, 266 42 C 316 45, 348 18, 392 12" fill="none" stroke="#38BDF8" stroke-width="3" stroke-linecap="round" class="sparkline-path"/>
+                                            <circle cx="134" cy="72" r="4" fill="#FFFFFF" stroke="#0B3954" stroke-width="2"/>
+                                            <circle cx="266" cy="42" r="4" fill="#FFFFFF" stroke="#0B3954" stroke-width="2"/>
+                                            <circle cx="392" cy="12" r="5.5" fill="#FFFFFF" stroke="#38BDF8" stroke-width="3"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- نمای موبایل ماکاپ (مخفی در حالت پیش‌فرض) -->
+                            <div id="hero-mobile-view" class="hidden mx-auto w-[285px] rounded-[2.6rem] bg-petrol-deep p-3 border-2 border-white/25 shadow-2xl transition-all duration-500">
+                                <div class="rounded-[2rem] bg-white text-slatearch-dark overflow-hidden">
+                                    <!-- ناچ موبایل -->
+                                    <div class="bg-petrol-deep pt-2.5 pb-4 px-5 text-white">
+                                        <div class="w-20 h-4 bg-black/40 rounded-full mx-auto mb-3"></div>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-xs font-black">آرسان شاپ</span>
+                                            <span class="px-2 py-0.5 rounded-full bg-petrol-sky/20 text-petrol-sky text-[10px] font-bold">سبد (۳)</span>
+                                        </div>
+                                        <p class="mt-3 text-sm font-black">کالکشن مینیمال ۱۴۰۵</p>
+                                        <p class="text-[11px] text-slate-300 mt-0.5">تجربه خرید لمسی فوق‌سریع</p>
+                                    </div>
+                                    <div class="p-4 space-y-3 bg-slatearch-bg">
+                                        <div class="rounded-2xl bg-white p-3 border border-slatearch-border flex items-center justify-between">
+                                            <div>
+                                                <p class="text-xs font-black text-petrol-deep">ساعت کرنوگراف اطلس</p>
+                                                <p class="text-[11px] text-petrol-mid font-bold mt-1">۱۲,۴۰۰,۰۰۰ تومان</p>
+                                            </div>
+                                            <div class="w-11 h-11 rounded-xl bg-petrol-rich flex items-center justify-center text-white text-xs font-black">VIP</div>
+                                        </div>
+                                        <div class="rounded-2xl bg-petrol-rich text-white p-3.5">
+                                            <div class="flex items-center justify-between text-[11px]">
+                                                <span class="text-slate-300">نرخ تبدیل موبایل</span>
+                                                <span class="text-petrol-sky font-black">+۱۸۴٪</span>
+                                            </div>
+                                            <div class="mt-2 h-2 rounded-full bg-white/15 overflow-hidden">
+                                                <div class="h-full w-4/5 rounded-full bg-petrol-sky"></div>
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <div class="rounded-xl bg-white p-2.5 text-center border border-slatearch-border">
+                                                <p class="text-xs font-black text-petrol-deep">۰.۵ ثانیه</p>
+                                                <p class="text-[10px] text-slatearch-body">لود موبایل</p>
+                                            </div>
+                                            <div class="rounded-xl bg-white p-2.5 text-center border border-slatearch-border">
+                                                <p class="text-xs font-black text-petrol-deep">۱۰۰/۱۰۰</p>
+                                                <p class="text-[10px] text-slatearch-body">امتیاز UX</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- کارت شیشه‌ای شناور پایینی چپ -->
+                            <div class="hidden sm:flex float-card absolute -bottom-5 -left-4 items-center gap-3 px-4 py-3 rounded-2xl bg-petrol-deep/90 border border-white/20 backdrop-blur-xl text-white shadow-2xl">
+                                <div class="w-10 h-10 rounded-xl bg-petrol-sky/20 border border-petrol-sky/40 flex items-center justify-center text-petrol-sky font-black text-sm">
+                                    ۱۰۰
+                                </div>
+                                <div class="leading-tight">
+                                    <p class="text-xs font-extrabold">سرعت و سئو تضمین‌شده</p>
+                                    <p class="text-[11px] text-slate-300">گزارش رسمی Google Lighthouse</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         ۳. نوار آمار متحرک KPI + مارکی بی‌نهایت قابلیت‌ها و تکنولوژی‌ها
+    ========================================================================== -->
+    <section aria-label="آمار و قابلیت‌ها" class="relative z-20 -mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="kpi-container" class="rounded-3xl bg-white border border-slatearch-border shadow-elevated p-6 sm:p-8 grid grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="text-center sm:text-right border-l border-slatearch-border/70 pl-4 last:border-l-0">
+                    <p class="text-3xl sm:text-4xl font-black text-petrol-deep">
+                        <span class="kpi-counter" data-target="48" data-prefix="+">۰</span>
+                    </p>
+                    <p class="mt-1.5 text-xs sm:text-sm font-semibold text-slatearch-body">پروژه‌های موفق تحویل‌شده</p>
+                </div>
+                <div class="text-center sm:text-right lg:border-l border-slatearch-border/70 lg:pl-4">
+                    <p class="text-3xl sm:text-4xl font-black text-petrol-rich">
+                        <span class="kpi-counter" data-target="99" data-suffix="٪">۰</span>
+                    </p>
+                    <p class="mt-1.5 text-xs sm:text-sm font-semibold text-slatearch-body">رضایت و تمدید کارفرمایان</p>
+                </div>
+                <div class="text-center sm:text-right border-l border-slatearch-border/70 pl-4">
+                    <p class="text-3xl sm:text-4xl font-black text-petrol-deep">
+                        <span class="kpi-counter" data-target="0.7" data-decimal="1" data-suffix=" ثانیه">۰</span>
+                    </p>
+                    <p class="mt-1.5 text-xs sm:text-sm font-semibold text-slatearch-body">میانگین سرعت بارگذاری</p>
+                </div>
+                <div class="text-center sm:text-right">
+                    <p class="text-3xl sm:text-4xl font-black text-petrol-mid">
+                        <span class="kpi-counter" data-target="100" data-suffix="/۱۰۰">۰</span>
+                    </p>
+                    <p class="mt-1.5 text-xs sm:text-sm font-semibold text-slatearch-body">امتیاز عملکرد و سئو گوگل</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- مارکی بی‌نهایت قابلیت‌ها -->
+        <div class="mt-12 border-y border-slatearch-border bg-slatearch-bg/75 py-4 overflow-hidden" dir="ltr">
+            <div class="marquee-track gap-4 items-center">
+                <!-- مجموعه اول -->
+                <div class="flex items-center gap-4 px-2" dir="rtl">
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slatearch-border text-xs sm:text-sm font-bold text-petrol-deep shadow-sm"><span class="w-2 h-2 rounded-full bg-petrol-sky"></span>طراحی UI/UX اختصاصی</span>
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slatearch-border text-xs sm:text-sm font-bold text-petrol-deep shadow-sm"><span class="w-2 h-2 rounded-full bg-petrol-rich"></span>فروشگاه اینترنتی حرفه‌ای</span>
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slatearch-border text-xs sm:text-sm font-bold text-petrol-deep shadow-sm"><span class="w-2 h-2 rounded-full bg-petrol-sky"></span>Tailwind & Modern CSS</span>
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slatearch-border text-xs sm:text-sm font-bold text-petrol-deep shadow-sm"><span class="w-2 h-2 rounded-full bg-petrol-rich"></span>بهینه‌سازی نرخ تبدیل (CRO)</span>
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slatearch-border text-xs sm:text-sm font-bold text-petrol-deep shadow-sm"><span class="w-2 h-2 rounded-full bg-petrol-sky"></span>سئو فنی پیشرفته</span>
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slatearch-border text-xs sm:text-sm font-bold text-petrol-deep shadow-sm"><span class="w-2 h-2 rounded-full bg-petrol-rich"></span>طراحی کاملاً واکنش‌گرا</span>
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slatearch-border text-xs sm:text-sm font-bold text-petrol-deep shadow-sm"><span class="w-2 h-2 rounded-full bg-petrol-sky"></span>انیمیشن‌های تعاملی ۶۰ فریم</span>
+                </div>
+                <!-- تکرار برای حلقه بی‌وقفه -->
+                <div class="flex items-center gap-4 px-2" dir="rtl" aria-hidden="true">
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slatearch-border text-xs sm:text-sm font-bold text-petrol-deep shadow-sm"><span class="w-2 h-2 rounded-full bg-petrol-sky"></span>طراحی UI/UX اختصاصی</span>
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slatearch-border text-xs sm:text-sm font-bold text-petrol-deep shadow-sm"><span class="w-2 h-2 rounded-full bg-petrol-rich"></span>فروشگاه اینترنتی حرفه‌ای</span>
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slatearch-border text-xs sm:text-sm font-bold text-petrol-deep shadow-sm"><span class="w-2 h-2 rounded-full bg-petrol-sky"></span>Tailwind & Modern CSS</span>
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slatearch-border text-xs sm:text-sm font-bold text-petrol-deep shadow-sm"><span class="w-2 h-2 rounded-full bg-petrol-rich"></span>بهینه‌سازی نرخ تبدیل (CRO)</span>
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slatearch-border text-xs sm:text-sm font-bold text-petrol-deep shadow-sm"><span class="w-2 h-2 rounded-full bg-petrol-sky"></span>سئو فنی پیشرفته</span>
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slatearch-border text-xs sm:text-sm font-bold text-petrol-deep shadow-sm"><span class="w-2 h-2 rounded-full bg-petrol-rich"></span>طراحی کاملاً واکنش‌گرا</span>
+                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-slatearch-border text-xs sm:text-sm font-bold text-petrol-deep shadow-sm"><span class="w-2 h-2 rounded-full bg-petrol-sky"></span>انیمیشن‌های تعاملی ۶۰ فریم</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         ۴. بخش خدمات تخصصی ما (Asymmetric Bento Grid + Mouse Spotlight)
+    ========================================================================== -->
+    <section id="services" class="py-24 bg-slatearch-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 reveal">
+                <div class="max-w-2xl">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slatearch-border text-petrol-rich text-xs font-extrabold">
+                        <span class="w-2 h-2 rounded-full bg-petrol-sky"></span>
+                        خدمات تخصصی ما
+                    </span>
+                    <h2 class="mt-4 text-2xl sm:text-4xl font-black text-petrol-deep leading-tight">
+                        هر آنچه برای درخشش دیجیتال برندتان نیاز دارید
+                    </h2>
+                </div>
+                <p class="text-sm sm:text-base text-slatearch-body max-w-md leading-relaxed">
+                    از طراحی معماری اطلاعات و هویت بصری تا پیاده‌سازی دقیق‌ترین تعامل‌های کاربری با کیفیت استاندارد استودیوهای بین‌المللی.
+                </p>
+            </div>
+
+            <!-- شبکه نامتقارن Bento Grid (۵ کارت با گرافیک کدنویسی‌شده اختصاصی) -->
+            <div class="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- کارت ۱: طراحی فروشگاه‌های اینترنتی پرسرعت (کارت بزرگ) -->
+                <article class="bento-spotlight reveal lg:col-span-7 rounded-3xl bg-white border border-slatearch-border p-7 sm:p-8 shadow-soft hover:shadow-elevated transition-all duration-300 flex flex-col justify-between">
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-slatearch-bg border border-slatearch-border flex items-center justify-center text-petrol-rich">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                            </div>
+                            <span class="px-3 py-1 rounded-full bg-slatearch-bg text-petrol-rich text-xs font-bold">پرفروش‌ترین خدمت</span>
+                        </div>
+                        <h3 class="mt-5 text-xl sm:text-2xl font-black text-petrol-deep">طراحی فروشگاه‌های اینترنتی پرسرعت</h3>
+                        <p class="mt-2.5 text-sm sm:text-base text-slatearch-body leading-relaxed max-w-xl">
+                            فروشگاه‌هایی با مسیر خرید کوتاه، فیلترهای لحظه‌ای، کارت محصول جذاب و سبد خرید هوشمند که نرخ رهاشدن سبد را به حداقل و فروش شما را به حداکثر می‌رسانند.
+                        </p>
+                    </div>
+
+                    <!-- پیش‌نمایش مینی رابط کاربری فروشگاه -->
+                    <div class="relative z-10 mt-7 rounded-2xl bg-slatearch-bg border border-slatearch-border p-4 sm:p-5">
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                            <div class="sm:col-span-7 rounded-2xl bg-white border border-slatearch-border p-4 flex items-center gap-4 shadow-sm">
+                                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-petrol-deep to-petrol-mid flex items-center justify-center text-white shrink-0">
+                                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <span class="text-[10px] font-bold text-petrol-mid bg-sky-50 px-2 py-0.5 rounded">موجود در انبار</span>
+                                    <p class="mt-1 text-sm font-black text-petrol-deep truncate">هدفون استودیویی نووا پرو</p>
+                                    <div class="mt-1 flex items-center justify-between">
+                                        <span class="text-xs font-extrabold text-petrol-rich">۹,۸۵۰,۰۰۰ تومان</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sm:col-span-5 rounded-2xl bg-petrol-deep text-white p-4 flex flex-col justify-between gap-3">
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-slate-300">سبد خرید سریع</span>
+                                    <span class="px-2 py-0.5 rounded-full bg-petrol-sky text-petrol-deep font-black text-[10px] animate-pulse">+۱ اضافه شد</span>
+                                </div>
+                                <div class="h-1.5 rounded-full bg-white/15 overflow-hidden">
+                                    <div class="h-full w-4/5 bg-petrol-sky rounded-full"></div>
+                                </div>
+                                <span class="text-[11px] text-slate-300">پرداخت امن ۲ مرحله‌ای</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- کارت ۲: طراحی رابط و تجربه کاربری UI/UX -->
+                <article class="bento-spotlight dark-bento reveal lg:col-span-5 rounded-3xl bg-gradient-to-br from-petrol-deep to-petrol-rich text-white p-7 sm:p-8 shadow-petrol flex flex-col justify-between">
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center text-petrol-sky">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+                        </div>
+                        <h3 class="mt-5 text-xl sm:text-2xl font-black text-white">طراحی رابط و تجربه کاربری UI/UX</h3>
+                        <p class="mt-2.5 text-sm text-slate-300 leading-relaxed">
+                            تدوین دیزاین‌سیستم اختصاصی، وایرفریم دقیق و پروتوتایپ تعاملی در فیگما پیش از نوشتن اولین خط کد.
+                        </p>
+                    </div>
+
+                    <!-- گرافیک مینی دیزاین سیستم -->
+                    <div class="relative z-10 mt-7 rounded-2xl bg-white/8 border border-white/12 p-4 space-y-3">
+                        <div class="flex items-center justify-between text-[11px] text-slate-300">
+                            <span>توکن‌های رنگ و شبکه</span>
+                            <span class="text-petrol-sky font-bold">Figma System</span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2">
+                            <div class="h-10 rounded-xl bg-petrol-deep border border-white/25"></div>
+                            <div class="h-10 rounded-xl bg-petrol-mid border border-white/20"></div>
+                            <div class="h-10 rounded-xl bg-petrol-sky"></div>
+                            <div class="h-10 rounded-xl bg-white"></div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 pt-1">
+                            <div class="h-6 rounded-lg bg-white/10 border border-dashed border-white/20"></div>
+                            <div class="h-6 rounded-lg bg-white/15 border border-white/25 col-span-2"></div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- کارت ۳: داشبوردهای مدیریتی و وب‌اپلیکیشن -->
+                <article class="bento-spotlight reveal lg:col-span-4 rounded-3xl bg-white border border-slatearch-border p-7 shadow-soft hover:shadow-elevated transition-all duration-300 flex flex-col justify-between">
+                    <div class="relative z-10">
+                        <div class="w-11 h-11 rounded-2xl bg-slatearch-bg border border-slatearch-border flex items-center justify-center text-petrol-rich">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        </div>
+                        <h3 class="mt-5 text-lg sm:text-xl font-black text-petrol-deep">داشبوردهای مدیریتی و وب‌اپ</h3>
+                        <p class="mt-2 text-sm text-slatearch-body leading-relaxed">
+                            مصورسازی داده‌های پیچیده، گزارش‌سازهای زنده و پنل‌های مدیریت کارآمد با چیدمان خلوت و خوانا.
+                        </p>
+                    </div>
+
+                    <!-- نمودار میله‌ای زنده -->
+                    <div class="relative z-10 mt-6 rounded-2xl bg-slatearch-bg border border-slatearch-border p-4 h-28 flex items-end justify-between gap-2.5">
+                        <div class="w-full bg-slate-300 rounded-t-lg bar-anim" style="height: 45%; animation-delay: 0s"></div>
+                        <div class="w-full bg-petrol-mid/60 rounded-t-lg bar-anim" style="height: 68%; animation-delay: 0.3s"></div>
+                        <div class="w-full bg-petrol-rich rounded-t-lg bar-anim" style="height: 55%; animation-delay: 0.6s"></div>
+                        <div class="w-full bg-petrol-deep rounded-t-lg bar-anim" style="height: 92%; animation-delay: 0.9s"></div>
+                        <div class="w-full bg-petrol-sky rounded-t-lg bar-anim" style="height: 78%; animation-delay: 1.2s"></div>
+                        <div class="w-full bg-petrol-rich rounded-t-lg bar-anim" style="height: 100%; animation-delay: 1.5s"></div>
+                    </div>
+                </article>
+
+                <!-- کارت ۴: لندینگ‌پیج‌های فروش‌محور -->
+                <article class="bento-spotlight reveal lg:col-span-4 rounded-3xl bg-white border border-slatearch-border p-7 shadow-soft hover:shadow-elevated transition-all duration-300 flex flex-col justify-between">
+                    <div class="relative z-10">
+                        <div class="w-11 h-11 rounded-2xl bg-slatearch-bg border border-slatearch-border flex items-center justify-center text-petrol-rich">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                        </div>
+                        <h3 class="mt-5 text-lg sm:text-xl font-black text-petrol-deep">لندینگ‌پیج‌های فروش‌محور</h3>
+                        <p class="mt-2 text-sm text-slatearch-body leading-relaxed">
+                            صفحات فرود هدفمند برای کمپین‌های تبلیغاتی با کپی‌رایتینگ دقیق و قیف تبدیل مهندسی‌شده.
+                        </p>
+                    </div>
+
+                    <!-- گرافیک قیف تبدیل -->
+                    <div class="relative z-10 mt-6 rounded-2xl bg-slatearch-bg border border-slatearch-border p-4 space-y-2">
+                        <div class="h-5 rounded-lg bg-petrol-deep text-white text-[10px] font-bold flex items-center justify-between px-3 w-full">
+                            <span>بازدید کمپین</span><span>۱۰۰٪</span>
+                        </div>
+                        <div class="h-5 rounded-lg bg-petrol-rich text-white text-[10px] font-bold flex items-center justify-between px-3 w-4/5 mx-auto">
+                            <span>تعامل موثر</span><span>۶۴٪</span>
+                        </div>
+                        <div class="h-5 rounded-lg bg-petrol-sky text-petrol-deep text-[10px] font-black flex items-center justify-between px-3 w-3/5 mx-auto">
+                            <span>مشتری واقعی</span><span>۲۴٪+</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- کارت ۵: بهینه‌سازی سرعت، سئو فنی و ریسپانسیو -->
+                <article class="bento-spotlight reveal lg:col-span-4 rounded-3xl bg-white border border-slatearch-border p-7 shadow-soft hover:shadow-elevated transition-all duration-300 flex flex-col justify-between">
+                    <div class="relative z-10">
+                        <div class="w-11 h-11 rounded-2xl bg-slatearch-bg border border-slatearch-border flex items-center justify-center text-petrol-rich">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        </div>
+                        <h3 class="mt-5 text-lg sm:text-xl font-black text-petrol-deep">سرعت، سئو فنی و ریسپانسیو</h3>
+                        <p class="mt-2 text-sm text-slatearch-body leading-relaxed">
+                            کدنویسی تمیز و سبک برای کسب بالاترین امتیاز Core Web Vitals و نمایش بی‌نقص در موبایل و دسکتاپ.
+                        </p>
+                    </div>
+
+                    <!-- گیج دایره‌ای امتیاز ۱۰۰ گوگل -->
+                    <div class="relative z-10 mt-6 rounded-2xl bg-slatearch-bg border border-slatearch-border p-4 flex items-center justify-center gap-5">
+                        <div class="relative w-20 h-20 flex items-center justify-center">
+                            <svg class="w-20 h-20 -rotate-90" viewBox="0 0 96 96">
+                                <circle cx="48" cy="48" r="40" fill="none" stroke="#E2E8F0" stroke-width="8"/>
+                                <circle cx="48" cy="48" r="40" fill="none" stroke="#0B3954" stroke-width="8" stroke-linecap="round" class="gauge-circle"/>
+                            </svg>
+                            <span class="absolute text-lg font-black text-petrol-deep">۱۰۰</span>
+                        </div>
+                        <div class="text-xs space-y-1">
+                            <p class="font-black text-petrol-deep">Google Lighthouse</p>
+                            <p class="text-slatearch-body">عملکرد: <strong class="text-petrol-rich">۱۰۰</strong></p>
+                            <p class="text-slatearch-body">سئو فنی: <strong class="text-petrol-rich">۱۰۰</strong></p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         ۵. گالری تعاملی نمونه‌کارهای منتخب + مودال مطالعه موردی (Case Study Modal)
+    ========================================================================== -->
+    <section id="portfolio" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 reveal">
+                <div>
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slatearch-bg border border-slatearch-border text-petrol-rich text-xs font-extrabold">
+                        <span class="w-2 h-2 rounded-full bg-petrol-rich"></span>
+                        نمونه‌کارهای منتخب
+                    </span>
+                    <h2 class="mt-4 text-2xl sm:text-4xl font-black text-petrol-deep">
+                        آثاری که کیفیت طراحی را اثبات می‌کنند
+                    </h2>
+                </div>
+
+                <!-- دکمه‌های فیلتر دسته‌بندی -->
+                <div class="flex flex-wrap items-center gap-2" role="tablist" aria-label="فیلتر نمونه‌کارها">
+                    <button type="button" data-filter="all" class="portfolio-filter-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-petrol-deep text-white shadow-md transition-all">همه</button>
+                    <button type="button" data-filter="ecommerce" class="portfolio-filter-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slatearch-bg text-slatearch-body hover:bg-slatearch-border/70 transition-all">فروشگاه اینترنتی</button>
+                    <button type="button" data-filter="webapp" class="portfolio-filter-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slatearch-bg text-slatearch-body hover:bg-slatearch-border/70 transition-all">داشبورد و وب‌اپ</button>
+                    <button type="button" data-filter="luxury" class="portfolio-filter-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slatearch-bg text-slatearch-body hover:bg-slatearch-border/70 transition-all">شرکتی و لوکس</button>
+                </div>
+            </div>
+
+            <!-- گرید ۶ پروژه اختصاصی (رندر شده از طریق JS برای همگام‌سازی بی‌نقص با مودال مطالعه موردی) -->
+            <div id="portfolio-grid" class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7"></div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         ۶. اسلایدر تعاملی مقایسه قبل و بعد (Before / After Redesign Slider)
+    ========================================================================== -->
+    <section id="comparison" class="py-24 bg-slatearch-bg border-y border-slatearch-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto reveal">
+                <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slatearch-border text-petrol-rich text-xs font-extrabold">
+                    <span class="w-2 h-2 rounded-full bg-petrol-sky"></span>
+                    مقایسه زنده کیفیت
+                </span>
+                <h2 class="mt-4 text-2xl sm:text-4xl font-black text-petrol-deep leading-tight">
+                    تفاوت یک طراحی معمولی با طراحی مهندسی‌شده
+                </h2>
+                <p class="mt-3 text-sm sm:text-base text-slatearch-body">
+                    دستگیره وسط را به چپ و راست بکشید تا اثر بازطراحی حرفه‌ای آرسان استودیو را بر خوانایی، اعتبار برند و نرخ تبدیل مشتری ببینید.
+                </p>
+            </div>
+
+            <!-- کانتینر اسلایدر مقایسه‌ای (جهت داخلی LTR برای محاسبه دقیق مختصات افقی) -->
+            <div class="mt-12 max-w-5xl mx-auto reveal">
+                <div id="ba-slider" dir="ltr" class="ba-container relative w-full h-[470px] sm:h-[440px] rounded-3xl overflow-hidden border border-slatearch-border shadow-elevated bg-white">
+
+                    <!-- لایه زیرین: طراحی مدرن آرسان استودیو (نمای کامل) -->
+                    <div dir="rtl" class="absolute inset-0 bg-gradient-to-br from-white via-slatearch-bg to-white p-5 sm:p-8 flex flex-col justify-between">
+                        <div class="flex items-center justify-between border-b border-slatearch-border pb-4">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-8 h-8 rounded-lg bg-petrol-deep flex items-center justify-center text-white text-xs font-black">آ</div>
+                                <span class="font-black text-petrol-deep text-sm sm:text-base">طراحی مدرن آرسان استودیو</span>
+                            </div>
+                            <span class="px-3 py-1 rounded-full bg-petrol-deep text-white text-[11px] font-bold">نسخه مهندسی‌شده</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-5 items-center my-auto py-4">
+                            <div class="sm:col-span-7 space-y-3 text-right">
+                                <span class="inline-block px-2.5 py-1 rounded-lg bg-sky-100 text-petrol-rich text-[11px] font-extrabold">تجربه کاربری شفاف و لوکس</span>
+                                <h3 class="text-xl sm:text-2xl font-black text-petrol-deep leading-snug">راهکارهای هوشمند مالی برای رشد پایدار سازمان شما</h3>
+                                <p class="text-xs sm:text-sm text-slatearch-body leading-relaxed">سلسله‌مراتب بصری دقیق، فضای تنفس استاندارد و دکمه اقدام متمایز که تصمیم‌گیری کاربر را ساده و سریع می‌کند.</p>
+                                <div class="flex items-center gap-3 pt-1">
+                                    <span class="px-4 py-2 rounded-xl bg-petrol-rich text-white text-xs font-bold shadow-md">دریافت دمو رایگان</span>
+                                    <span class="px-4 py-2 rounded-xl bg-white border border-slatearch-border text-petrol-deep text-xs font-bold">مشاهده تعرفه‌ها</span>
+                                </div>
+                            </div>
+                            <div class="sm:col-span-5 rounded-2xl bg-petrol-deep text-white p-4 shadow-petrol space-y-3">
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-slate-300">شاخص عملکرد صفحه</span>
+                                    <span class="text-petrol-sky font-black">عالی</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2.5">
+                                    <div class="rounded-xl bg-white/10 p-2.5">
+                                        <p class="text-[10px] text-slate-300">نرخ تبدیل</p>
+                                        <p class="text-base font-black text-petrol-sky">۵.۹٪</p>
+                                    </div>
+                                    <div class="rounded-xl bg-white/10 p-2.5">
+                                        <p class="text-[10px] text-slate-300">سرعت لود</p>
+                                        <p class="text-base font-black text-white">۰.۶ ثانیه</p>
+                                    </div>
+                                </div>
+                                <div class="h-1.5 rounded-full bg-white/15 overflow-hidden">
+                                    <div class="h-full w-[96%] bg-petrol-sky rounded-full"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-slatearch-border text-[11px] font-bold text-petrol-rich">
+                            <span>✓ امتیاز سرعت ۱۰۰/۱۰۰</span>
+                            <span>✓ واکنش‌گرا در تمام موبایل‌ها</span>
+                            <span>✓ افزایش +۱۸۵٪ اعتماد مخاطب</span>
+                        </div>
+                    </div>
+
+                    <!-- لایه بالایی قابل برش: طراحی معمولی و قدیمی -->
+                    <div id="ba-before-layer" dir="rtl" class="absolute inset-0 bg-[#E5E7EB] p-5 sm:p-8 flex flex-col justify-between overflow-hidden" style="clip-path: inset(0 50% 0 0);">
+                        <div class="flex items-center justify-between border-b-2 border-gray-400 pb-3 bg-gray-300/70 -mx-5 -mt-5 px-5 pt-4 sm:-mx-8 sm:-mt-8 sm:px-8 sm:pt-6">
+                            <span class="font-bold text-gray-700 text-sm">قالب آماده قدیمی و شلوغ</span>
+                            <span class="px-2.5 py-0.5 rounded bg-gray-600 text-white text-[11px]">طراحی معمولی</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-start my-auto py-3">
+                            <div class="sm:col-span-8 bg-gray-100 border border-gray-400 p-3 space-y-2 text-right">
+                                <p class="text-xs bg-gray-300 text-gray-700 px-2 py-0.5 inline-block">خوش آمدید به سایت شرکت ما...</p>
+                                <h3 class="text-base sm:text-lg font-bold text-gray-800 leading-tight">ارائه خدمات مالی و حسابداری و مشاوره و ثبت شرکت با قیمت مناسب در سراسر کشور</h3>
+                                <p class="text-[11px] text-gray-600 leading-normal">متن‌های فشرده بدون فاصله‌گذاری استاندارد، نبود تمرکز بصری، منوهای تو در تو و دکمه‌های کم‌کنتراست که باعث خروج سریع کاربر از صفحه در چند ثانیه اول می‌شود.</p>
+                                <div class="flex flex-wrap gap-1.5 pt-1">
+                                    <span class="px-2.5 py-1 bg-gray-500 text-white text-[10px]">کلیک کنید</span>
+                                    <span class="px-2.5 py-1 bg-gray-400 text-gray-800 text-[10px]">ادامه مطلب</span>
+                                    <span class="px-2.5 py-1 bg-gray-300 text-gray-700 text-[10px]">تماس با ما</span>
+                                </div>
+                            </div>
+                            <div class="sm:col-span-4 bg-gray-200 border border-gray-400 p-3 space-y-2">
+                                <p class="text-xs font-bold text-gray-700 border-b border-gray-400 pb-1">وضعیت فنی ضعیف</p>
+                                <div class="bg-gray-100 p-2 border border-gray-300">
+                                    <p class="text-[10px] text-gray-500">نرخ تبدیل</p>
+                                    <p class="text-sm font-bold text-gray-700">۱.۲٪ (بسیار پایین)</p>
+                                </div>
+                                <div class="bg-gray-100 p-2 border border-gray-300">
+                                    <p class="text-[10px] text-gray-500">زمان باز شدن</p>
+                                    <p class="text-sm font-bold text-gray-700">۴.۸ ثانیه (کند)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center justify-between gap-2 pt-3 border-t border-gray-400 text-[11px] text-gray-600">
+                            <span>✕ کدنویسی سنگین و قدیمی</span>
+                            <span>✕ به هم ریختگی در موبایل</span>
+                            <span>✕ نرخ پرش ۷۴٪ کاربران</span>
+                        </div>
+                    </div>
+
+                    <!-- خط جداکننده و دستگیره تعاملی -->
+                    <div id="ba-handle" role="slider" tabindex="0" aria-label="اسلایدر مقایسه طراحی قبل و بعد" aria-valuemin="8" aria-valuemax="92" aria-valuenow="50"
+                         class="absolute top-0 bottom-0 w-1 bg-petrol-sky cursor-ew-resize z-20 focus:outline-none" style="left: 50%; transform: translateX(-50%);">
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-petrol-deep border-2 border-petrol-sky text-white shadow-2xl flex items-center justify-center hover:scale-110 transition-transform">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l-4 3 4 3m8-6l4 3-4 3"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         ۷. برآوردگر هوشمند هزینه و زمان پروژه (Interactive Cost & Timeline Estimator)
+    ========================================================================== -->
+    <section id="estimator" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="rounded-[2.2rem] bg-petrol-deep text-white p-6 sm:p-10 lg:p-12 shadow-petrol relative overflow-hidden reveal">
+                <!-- پس‌زمینه تزئینی -->
+                <div class="absolute inset-0 architect-grid opacity-60 pointer-events-none"></div>
+                <div class="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-petrol-sky/15 blur-[110px] pointer-events-none"></div>
+
+                <div class="relative z-10">
+                    <div class="max-w-2xl">
+                        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-petrol-sky text-xs font-extrabold">
+                            <span class="w-2 h-2 rounded-full bg-petrol-sky"></span>
+                            محاسبه‌گر شفاف و آنلاین
+                        </span>
+                        <h2 class="mt-4 text-2xl sm:text-4xl font-black text-white leading-tight">
+                            برآوردگر هوشمند هزینه و زمان پروژه
+                        </h2>
+                        <p class="mt-3 text-sm sm:text-base text-slate-300">
+                            نیازهای پروژه خود را انتخاب کنید تا بازه سرمایه‌گذاری و زمان دقیق تحویل به صورت لحظه‌ای محاسبه شود.
+                        </p>
+                    </div>
+
+                    <div class="mt-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                        <!-- ستون تنظیمات (۳ مرحله) -->
+                        <div class="lg:col-span-8 space-y-8">
+                            <!-- مرحله ۱: نوع پروژه -->
+                            <div>
+                                <div class="flex items-center gap-2.5 mb-4">
+                                    <span class="w-7 h-7 rounded-lg bg-petrol-sky text-petrol-deep font-black text-xs flex items-center justify-center">۱</span>
+                                    <h3 class="text-base sm:text-lg font-extrabold text-white">نوع وب‌سایت یا محصول دیجیتال را انتخاب کنید</h3>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5" id="est-type-group">
+                                    <label class="est-type-card cursor-pointer rounded-2xl border-2 border-petrol-sky bg-white text-petrol-deep p-4 transition-all flex items-start gap-3">
+                                        <input type="radio" name="projectType" value="corporate" class="sr-only" checked>
+                                        <span class="mt-0.5 w-5 h-5 rounded-full border-2 border-petrol-rich flex items-center justify-center shrink-0">
+                                            <span class="est-radio-dot w-2.5 h-2.5 rounded-full bg-petrol-rich"></span>
+                                        </span>
+                                        <div>
+                                            <p class="font-black text-sm">سایت شرکتی و معرفی برند</p>
+                                            <p class="text-xs text-slatearch-body mt-1">مناسب شرکت‌ها، کلینیک‌ها و برندهای لوکس</p>
+                                        </div>
+                                    </label>
+
+                                    <label class="est-type-card cursor-pointer rounded-2xl border border-white/15 bg-white/8 text-white hover:bg-white/12 p-4 transition-all flex items-start gap-3">
+                                        <input type="radio" name="projectType" value="ecommerce" class="sr-only">
+                                        <span class="mt-0.5 w-5 h-5 rounded-full border-2 border-slate-400 flex items-center justify-center shrink-0">
+                                            <span class="est-radio-dot w-2.5 h-2.5 rounded-full bg-transparent"></span>
+                                        </span>
+                                        <div>
+                                            <p class="font-black text-sm">فروشگاه اینترنتی اختصاصی</p>
+                                            <p class="text-xs text-slate-300 mt-1">سبد خرید سریع، فیلتر پیشرفته و فروش بالا</p>
+                                        </div>
+                                    </label>
+
+                                    <label class="est-type-card cursor-pointer rounded-2xl border border-white/15 bg-white/8 text-white hover:bg-white/12 p-4 transition-all flex items-start gap-3">
+                                        <input type="radio" name="projectType" value="webapp" class="sr-only">
+                                        <span class="mt-0.5 w-5 h-5 rounded-full border-2 border-slate-400 flex items-center justify-center shrink-0">
+                                            <span class="est-radio-dot w-2.5 h-2.5 rounded-full bg-transparent"></span>
+                                        </span>
+                                        <div>
+                                            <p class="font-black text-sm">داشبورد و وب‌اپلیکیشن</p>
+                                            <p class="text-xs text-slate-300 mt-1">سامانه‌های سازمانی، پنل مالی و SaaS</p>
+                                        </div>
+                                    </label>
+
+                                    <label class="est-type-card cursor-pointer rounded-2xl border border-white/15 bg-white/8 text-white hover:bg-white/12 p-4 transition-all flex items-start gap-3">
+                                        <input type="radio" name="projectType" value="landing" class="sr-only">
+                                        <span class="mt-0.5 w-5 h-5 rounded-full border-2 border-slate-400 flex items-center justify-center shrink-0">
+                                            <span class="est-radio-dot w-2.5 h-2.5 rounded-full bg-transparent"></span>
+                                        </span>
+                                        <div>
+                                            <p class="font-black text-sm">لندینگ‌پیج تبلیغاتی</p>
+                                            <p class="text-xs text-slate-300 mt-1">صفحه فرود پرسرعت ویژه کمپین و جذب لید</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- مرحله ۲: امکانات افزودنی -->
+                            <div>
+                                <div class="flex items-center gap-2.5 mb-4">
+                                    <span class="w-7 h-7 rounded-lg bg-petrol-sky text-petrol-deep font-black text-xs flex items-center justify-center">۲</span>
+                                    <h3 class="text-base sm:text-lg font-extrabold text-white">امکانات تخصصی مورد نیاز را فعال کنید</h3>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="est-addons-group">
+                                    <label class="est-addon-card cursor-pointer rounded-2xl border border-petrol-sky/60 bg-white/12 p-3.5 flex items-center justify-between gap-3 transition-all">
+                                        <div class="flex items-center gap-3">
+                                            <input type="checkbox" value="figma" checked class="w-4 h-4 accent-sky-400 rounded cursor-pointer">
+                                            <span class="text-xs sm:text-sm font-bold text-white">طراحی اختصاصی UI/UX در فیگما</span>
+                                        </div>
+                                        <span class="text-[11px] text-petrol-sky font-bold shrink-0">+۶ م</span>
+                                    </label>
+
+                                    <label class="est-addon-card cursor-pointer rounded-2xl border border-white/12 bg-white/6 hover:bg-white/10 p-3.5 flex items-center justify-between gap-3 transition-all">
+                                        <div class="flex items-center gap-3">
+                                            <input type="checkbox" value="bilingual" class="w-4 h-4 accent-sky-400 rounded cursor-pointer">
+                                            <span class="text-xs sm:text-sm font-bold text-white">نسخه دو زبانه فارسی / انگلیسی</span>
+                                        </div>
+                                        <span class="text-[11px] text-slate-300 font-bold shrink-0">+۵ م</span>
+                                    </label>
+
+                                    <label class="est-addon-card cursor-pointer rounded-2xl border border-petrol-sky/60 bg-white/12 p-3.5 flex items-center justify-between gap-3 transition-all">
+                                        <div class="flex items-center gap-3">
+                                            <input type="checkbox" value="seo" checked class="w-4 h-4 accent-sky-400 rounded cursor-pointer">
+                                            <span class="text-xs sm:text-sm font-bold text-white">سئو فنی و امتیاز سرعت بالای ۹۵</span>
+                                        </div>
+                                        <span class="text-[11px] text-petrol-sky font-bold shrink-0">+۴ م</span>
+                                    </label>
+
+                                    <label class="est-addon-card cursor-pointer rounded-2xl border border-white/12 bg-white/6 hover:bg-white/10 p-3.5 flex items-center justify-between gap-3 transition-all">
+                                        <div class="flex items-center gap-3">
+                                            <input type="checkbox" value="motion" class="w-4 h-4 accent-sky-400 rounded cursor-pointer">
+                                            <span class="text-xs sm:text-sm font-bold text-white">انیمیشن‌های تعاملی و سه‌بعدی</span>
+                                        </div>
+                                        <span class="text-[11px] text-slate-300 font-bold shrink-0">+۵.۵ م</span>
+                                    </label>
+
+                                    <label class="est-addon-card cursor-pointer rounded-2xl border border-white/12 bg-white/6 hover:bg-white/10 p-3.5 flex items-center justify-between gap-3 transition-all">
+                                        <div class="flex items-center gap-3">
+                                            <input type="checkbox" value="admin" class="w-4 h-4 accent-sky-400 rounded cursor-pointer">
+                                            <span class="text-xs sm:text-sm font-bold text-white">پنل مدیریت اختصاصی</span>
+                                        </div>
+                                        <span class="text-[11px] text-slate-300 font-bold shrink-0">+۹ م</span>
+                                    </label>
+
+                                    <label class="est-addon-card cursor-pointer rounded-2xl border border-white/12 bg-white/6 hover:bg-white/10 p-3.5 flex items-center justify-between gap-3 transition-all">
+                                        <div class="flex items-center gap-3">
+                                            <input type="checkbox" value="payment" class="w-4 h-4 accent-sky-400 rounded cursor-pointer">
+                                            <span class="text-xs sm:text-sm font-bold text-white">اتصال درگاه پرداخت و پیامک</span>
+                                        </div>
+                                        <span class="text-[11px] text-slate-300 font-bold shrink-0">+۳.۵ م</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- مرحله ۳: سرعت تحویل -->
+                            <div>
+                                <div class="flex items-center gap-2.5 mb-4">
+                                    <span class="w-7 h-7 rounded-lg bg-petrol-sky text-petrol-deep font-black text-xs flex items-center justify-center">۳</span>
+                                    <h3 class="text-base sm:text-lg font-extrabold text-white">سرعت اجرا و تحویل پروژه</h3>
+                                </div>
+                                <div class="inline-grid grid-cols-2 p-1.5 rounded-2xl bg-white/10 border border-white/15 w-full sm:w-auto gap-2">
+                                    <button id="speed-standard" type="button" onclick="setDeliverySpeed('standard')" class="px-5 py-3 rounded-xl text-xs sm:text-sm font-black bg-white text-petrol-deep shadow-md transition-all">
+                                        زمان‌بندی استاندارد
+                                    </button>
+                                    <button id="speed-vip" type="button" onclick="setDeliverySpeed('vip')" class="px-5 py-3 rounded-xl text-xs sm:text-sm font-bold text-slate-200 hover:text-white transition-all flex items-center justify-center gap-1.5">
+                                        <span>تحویل فوری VIP</span>
+                                        <span class="px-1.5 py-0.5 rounded bg-petrol-sky/20 text-petrol-sky text-[10px]">۳۵٪ سریع‌تر</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- پنل خلاصه زنده و چسبان (Sticky Summary Panel) -->
+                        <div class="lg:col-span-4 lg:sticky lg:top-24">
+                            <div class="rounded-3xl bg-white text-slatearch-dark p-6 sm:p-7 shadow-2xl border border-slatearch-border">
+                                <div class="flex items-center justify-between pb-4 border-b border-slatearch-border">
+                                    <span class="text-sm font-black text-petrol-deep">خلاصه برآورد زنده</span>
+                                    <span id="est-speed-badge" class="px-2.5 py-1 rounded-lg bg-slatearch-bg text-petrol-rich text-[11px] font-bold">استاندارد</span>
+                                </div>
+
+                                <!-- بازه قیمت -->
+                                <div class="mt-5">
+                                    <p class="text-xs font-semibold text-slatearch-body">بازه سرمایه‌گذاری تقریبی:</p>
+                                    <p id="est-price-range" class="mt-2 text-2xl sm:text-[1.65rem] font-black text-petrol-deep leading-tight">۲۴ تا ۲۸ میلیون تومان</p>
+                                </div>
+
+                                <!-- زمان تحویل -->
+                                <div class="mt-5 rounded-2xl bg-slatearch-bg border border-slatearch-border p-4 flex items-center justify-between">
+                                    <div class="flex items-center gap-2.5">
+                                        <span class="w-9 h-9 rounded-xl bg-petrol-rich text-white flex items-center justify-center">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        </span>
+                                        <span class="text-xs font-bold text-slatearch-body">زمان تخمینی اجرا</span>
+                                    </div>
+                                    <span id="est-days" class="text-base font-black text-petrol-deep">۱۸ روز کاری</span>
+                                </div>
+
+                                <!-- تگ‌های امکانات انتخاب‌شده -->
+                                <div class="mt-5">
+                                    <p class="text-xs font-bold text-slatearch-body mb-2.5">موارد شامل‌شده در این برآورد:</p>
+                                    <div id="est-tags" class="flex flex-wrap gap-1.5"></div>
+                                </div>
+
+                                <button type="button" onclick="applyEstimateToContact()" class="mt-6 w-full py-4 px-5 rounded-2xl bg-petrol-rich hover:bg-petrol-mid text-white font-black text-sm shadow-petrol transition-all duration-300 hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                                    <span>ثبت این برآورد و دریافت مشاوره رایگان</span>
+                                    <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6"/></svg>
+                                </button>
+                                <p class="mt-3 text-center text-[11px] text-slatearch-muted">مشخصات انتخابی به‌صورت خودکار به فرم تماس منتقل می‌شود.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         ۸. روند اجرای پروژه (Interactive 4-Step Architectural Process Timeline)
+    ========================================================================== -->
+    <section id="process" class="py-24 bg-slatearch-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto reveal">
+                <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slatearch-border text-petrol-rich text-xs font-extrabold">
+                    <span class="w-2 h-2 rounded-full bg-petrol-rich"></span>
+                    شفافیت کامل در هر قدم
+                </span>
+                <h2 class="mt-4 text-2xl sm:text-4xl font-black text-petrol-deep">مسیر خلق وب‌سایت شما</h2>
+                <p class="mt-3 text-sm sm:text-base text-slatearch-body">
+                    روی هر مرحله کلیک کنید تا جزئیات دقیق خروجی‌ها و استانداردهای اجرایی آرسان استودیو را مشاهده کنید.
+                </p>
+            </div>
+
+            <!-- نوار پیشرفت ۴ مرحله‌ای تعاملی -->
+            <div class="mt-12 reveal">
+                <div class="relative">
+                    <!-- خط پیشرفت دسکتاپ -->
+                    <div class="hidden md:block absolute top-7 right-12 left-12 h-1 bg-slatearch-border rounded-full">
+                        <div id="process-progress-bar" class="h-full bg-gradient-to-l from-petrol-deep via-petrol-rich to-petrol-sky rounded-full transition-all duration-500" style="width: 0%;"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative z-10" id="process-steps-nav">
+                        <button type="button" onclick="selectProcessStep(0)" class="process-step-btn text-right md:text-center p-4 rounded-2xl bg-white border-2 border-petrol-rich shadow-soft transition-all flex md:flex-col items-center gap-4 md:gap-3">
+                            <span class="step-num w-12 h-12 rounded-2xl bg-petrol-deep text-white font-black text-lg flex items-center justify-center shrink-0 transition-colors">۱</span>
+                            <div>
+                                <p class="text-sm font-black text-petrol-deep">تحلیل کسب‌وکار و استراتژی</p>
+                                <p class="text-xs text-slatearch-body mt-0.5">شناخت مخاطب و نقشه راه</p>
+                            </div>
+                        </button>
+
+                        <button type="button" onclick="selectProcessStep(1)" class="process-step-btn text-right md:text-center p-4 rounded-2xl bg-white/80 border border-slatearch-border hover:bg-white transition-all flex md:flex-col items-center gap-4 md:gap-3">
+                            <span class="step-num w-12 h-12 rounded-2xl bg-slatearch-bg text-petrol-rich font-black text-lg flex items-center justify-center shrink-0 transition-colors">۲</span>
+                            <div>
+                                <p class="text-sm font-black text-petrol-deep">طراحی UI و پیش‌نمایش تعاملی</p>
+                                <p class="text-xs text-slatearch-body mt-0.5">پروتوتایپ زنده در فیگما</p>
+                            </div>
+                        </button>
+
+                        <button type="button" onclick="selectProcessStep(2)" class="process-step-btn text-right md:text-center p-4 rounded-2xl bg-white/80 border border-slatearch-border hover:bg-white transition-all flex md:flex-col items-center gap-4 md:gap-3">
+                            <span class="step-num w-12 h-12 rounded-2xl bg-slatearch-bg text-petrol-rich font-black text-lg flex items-center justify-center shrink-0 transition-colors">۳</span>
+                            <div>
+                                <p class="text-sm font-black text-petrol-deep">پیاده‌سازی تمیز و انیمیشن‌ها</p>
+                                <p class="text-xs text-slatearch-body mt-0.5">کدنویسی استاندارد و سریع</p>
+                            </div>
+                        </button>
+
+                        <button type="button" onclick="selectProcessStep(3)" class="process-step-btn text-right md:text-center p-4 rounded-2xl bg-white/80 border border-slatearch-border hover:bg-white transition-all flex md:flex-col items-center gap-4 md:gap-3">
+                            <span class="step-num w-12 h-12 rounded-2xl bg-slatearch-bg text-petrol-rich font-black text-lg flex items-center justify-center shrink-0 transition-colors">۴</span>
+                            <div>
+                                <p class="text-sm font-black text-petrol-deep">تست سرعت، سئو و تحویل نهایی</p>
+                                <p class="text-xs text-slatearch-body mt-0.5">استقرار، آموزش و پشتیبانی</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- کارت نمایش جزئیات مرحله فعال -->
+                <div id="process-detail-card" class="mt-8 rounded-3xl bg-white border border-slatearch-border p-7 sm:p-9 shadow-soft"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         ۹. دیدگاه کارفرمایان (Testimonials) + آکاردئون سوالات متداول (FAQ)
+    ========================================================================== -->
+    <section id="testimonials" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto reveal">
+                <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slatearch-bg border border-slatearch-border text-petrol-rich text-xs font-extrabold">
+                    <span class="w-2 h-2 rounded-full bg-petrol-sky"></span>
+                    صدای کارفرمایان ما
+                </span>
+                <h2 class="mt-4 text-2xl sm:text-4xl font-black text-petrol-deep">اعتماد مدیران و بنیان‌گذاران برندهای پیشرو</h2>
+            </div>
+
+            <!-- ۳ کارت دیدگاه مشتریان -->
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 reveal">
+                <article class="rounded-3xl bg-slatearch-bg border border-slatearch-border p-7 flex flex-col justify-between hover:bg-white hover:shadow-elevated transition-all duration-300">
+                    <div>
+                        <div class="flex items-center gap-1 text-petrol-rich mb-4" aria-label="امتیاز ۵ از ۵">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        </div>
+                        <p class="text-sm text-slatearch-dark leading-relaxed">
+                            «وقتی نسخه اولیه فروشگاه نُت گالری را دیدیم واقعاً شگفت‌زده شدیم. ظرافت تایپوگرافی، سرعت باز شدن صفحات و سادگی فرآیند خرید باعث شد در همان دو ماه اول نرخ تبدیل ما بیش از دو برابر شود.»
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-5 border-t border-slatearch-border flex items-center gap-3.5">
+                        <div class="w-11 h-11 rounded-2xl bg-petrol-deep text-white font-black text-sm flex items-center justify-center shrink-0">س‌م</div>
+                        <div>
+                            <p class="text-sm font-black text-petrol-deep">سهراب منصوری</p>
+                            <p class="text-xs text-slatearch-body">مدیرعامل نُت گالری</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="rounded-3xl bg-petrol-deep text-white border border-petrol-mid/50 p-7 flex flex-col justify-between shadow-petrol">
+                    <div>
+                        <div class="flex items-center gap-1 text-petrol-sky mb-4" aria-label="امتیاز ۵ از ۵">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        </div>
+                        <p class="text-sm text-slate-200 leading-relaxed">
+                            «تیم فنی ما روی کیفیت کد و معماری رابط کاربری بسیار حساس است. داشبورد مالی تراز هوشمند با چنان نظم و دقتی طراحی و پیاده‌سازی شد که رضایت مدیران مالی شرکت‌های مشتری ما به ۹۹٪ رسید.»
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-5 border-t border-white/12 flex items-center gap-3.5">
+                        <div class="w-11 h-11 rounded-2xl bg-petrol-sky text-petrol-deep font-black text-sm flex items-center justify-center shrink-0">ن‌ک</div>
+                        <div>
+                            <p class="text-sm font-black text-white">نگار کریمی</p>
+                            <p class="text-xs text-slate-300">هم‌بنیان‌گذار تراز هوشمند</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="rounded-3xl bg-slatearch-bg border border-slatearch-border p-7 flex flex-col justify-between hover:bg-white hover:shadow-elevated transition-all duration-300">
+                    <div>
+                        <div class="flex items-center gap-1 text-petrol-rich mb-4" aria-label="امتیاز ۵ از ۵">
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        </div>
+                        <p class="text-sm text-slatearch-dark leading-relaxed">
+                            «به‌عنوان یک دفتر معماری، نگاه مینیمال و نظم بصری برای ما حیاتی بود. وب‌سایت جدید گروه پارسه دقیقاً همان حس وقار و دقتی را منتقل می‌کند که در پروژه‌های ساختمانی خودمان داریم.»
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-5 border-t border-slatearch-border flex items-center gap-3.5">
+                        <div class="w-11 h-11 rounded-2xl bg-petrol-rich text-white font-black text-sm flex items-center justify-center shrink-0">آر</div>
+                        <div>
+                            <p class="text-sm font-black text-petrol-deep">مهندس آرش رادمنش</p>
+                            <p class="text-xs text-slatearch-body">مدیر گروه معماری پارسه</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- بخش سوالات متداول (FAQ Accordion) -->
+            <div id="faq" class="mt-24 pt-16 border-t border-slatearch-border">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                    <div class="lg:col-span-4 reveal">
+                        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slatearch-bg border border-slatearch-border text-petrol-rich text-xs font-extrabold">
+                            سوالات متداول
+                        </span>
+                        <h2 class="mt-4 text-2xl sm:text-3xl font-black text-petrol-deep leading-tight">پاسخ به پرسش‌های پرتکرار کارفرمایان</h2>
+                        <p class="mt-3 text-sm text-slatearch-body leading-relaxed">
+                            اگر سوال دیگری در ذهن دارید، از طریق فرم ثبت پروژه در پایین صفحه می‌توانید جزئیات مدنظرتان را برای ما ارسال کنید.
+                        </p>
+                    </div>
+
+                    <div class="lg:col-span-8 space-y-3.5 reveal" id="faq-list">
+                        <div class="faq-item rounded-2xl bg-slatearch-bg border border-slatearch-border overflow-hidden transition-colors" data-open="true">
+                            <button type="button" class="faq-trigger w-full px-6 py-5 text-right flex items-center justify-between gap-4 font-extrabold text-sm sm:text-base text-petrol-deep">
+                                <span>زمان تحویل یک وب‌سایت اختصاصی چقدر است؟</span>
+                                <svg class="faq-chevron w-5 h-5 text-petrol-rich shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div class="faq-content">
+                                <div class="overflow-hidden">
+                                    <p class="px-6 pb-5 text-sm text-slatearch-body leading-relaxed">
+                                        بسته به وسعت و امکانات پروژه، لندینگ‌پیج‌ها بین ۷ تا ۱۰ روز کاری، وب‌سایت‌های شرکتی بین ۱۲ تا ۲۰ روز کاری و فروشگاه‌های اینترنتی یا داشبوردهای اختصاصی بین ۲۰ تا ۳۵ روز کاری تحویل داده می‌شوند. همچنین گزینه تحویل فوری VIP با زمان‌بندی فشرده نیز قابل انتخاب است.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item rounded-2xl bg-slatearch-bg border border-slatearch-border overflow-hidden transition-colors" data-open="false">
+                            <button type="button" class="faq-trigger w-full px-6 py-5 text-right flex items-center justify-between gap-4 font-extrabold text-sm sm:text-base text-petrol-deep">
+                                <span>آیا وب‌سایت در موبایل و تبلت هم به همین کیفیت نمایش داده می‌شود؟</span>
+                                <svg class="faq-chevron w-5 h-5 text-petrol-rich shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div class="faq-content">
+                                <div class="overflow-hidden">
+                                    <p class="px-6 pb-5 text-sm text-slatearch-body leading-relaxed">
+                                        بله، ۱۰۰ درصد. تمام پروژه‌های آرسان استودیو با رویکرد Mobile-First طراحی می‌شوند و روی انواع نمایشگرهای موبایل، تبلت، لپ‌تاپ و مانیتورهای عریض با دقت پیکسلی تست و بهینه‌سازی می‌شوند.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item rounded-2xl bg-slatearch-bg border border-slatearch-border overflow-hidden transition-colors" data-open="false">
+                            <button type="button" class="faq-trigger w-full px-6 py-5 text-right flex items-center justify-between gap-4 font-extrabold text-sm sm:text-base text-petrol-deep">
+                                <span>آیا در آینده امکان توسعه و افزودن امکانات جدید وجود دارد؟</span>
+                                <svg class="faq-chevron w-5 h-5 text-petrol-rich shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div class="faq-content">
+                                <div class="overflow-hidden">
+                                    <p class="px-6 pb-5 text-sm text-slatearch-body leading-relaxed">
+                                        دقیقاً به همین دلیل از کدنویسی ماژولار، تمیز و استاندارد استفاده می‌کنیم. هر زمان که کسب‌وکار شما رشد کند، می‌توانید بدون بازنویسی از صفر، صفحات تازه، اتصال به APIهای جدید، درگاه پرداخت یا پنل‌های پیشرفته را به آن اضافه کنید.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item rounded-2xl bg-slatearch-bg border border-slatearch-border overflow-hidden transition-colors" data-open="false">
+                            <button type="button" class="faq-trigger w-full px-6 py-5 text-right flex items-center justify-between gap-4 font-extrabold text-sm sm:text-base text-petrol-deep">
+                                <span>آیا از قالب‌های آماده استفاده می‌کنید یا طراحی کاملاً اختصاصی است؟</span>
+                                <svg class="faq-chevron w-5 h-5 text-petrol-rich shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div class="faq-content">
+                                <div class="overflow-hidden">
+                                    <p class="px-6 pb-5 text-sm text-slatearch-body leading-relaxed">
+                                        هیچ پروژه تکراری یا قالب آماده سنگینی در کار نیست. تمامی اجزا از تایپوگرافی و پالت رنگی تا ساختار کدنویسی، متناسب با هویت برند و نیاز دقیق مخاطب هدف شما از پایه مهندسی و پیاده‌سازی می‌شود.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item rounded-2xl bg-slatearch-bg border border-slatearch-border overflow-hidden transition-colors" data-open="false">
+                            <button type="button" class="faq-trigger w-full px-6 py-5 text-right flex items-center justify-between gap-4 font-extrabold text-sm sm:text-base text-petrol-deep">
+                                <span>پشتیبانی و گارانتی فنی پس از تحویل چگونه است؟</span>
+                                <svg class="faq-chevron w-5 h-5 text-petrol-rich shrink-0 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                            <div class="faq-content">
+                                <div class="overflow-hidden">
+                                    <p class="px-6 pb-5 text-sm text-slatearch-body leading-relaxed">
+                                        تمامی پروژه‌ها شامل ۳ ماه پشتیبانی فنی رایگان، رفع اشکالات احتمالی و ویدیوهای آموزشی کار با وب‌سایت هستند. پس از آن نیز در صورت تمایل قرارداد پشتیبانی و توسعه مستمر قابل تمدید است.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         ۱۰. بخش تماس، کپی سریع اطلاعات و فرم مشاوره با اعتبارسنجی (Contact Section)
+    ========================================================================== -->
+    <section id="contact" class="py-24 bg-slatearch-bg border-t border-slatearch-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                <!-- ستون راست: مزایا و تضمین‌های همکاری (بدون اطلاعات تماس مستقیم) -->
+                <div class="lg:col-span-5 space-y-6 reveal">
+                    <div>
+                        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slatearch-border text-petrol-rich text-xs font-extrabold">
+                            <span class="w-2 h-2 rounded-full bg-petrol-sky"></span>
+                            شروع یک همکاری درخشان
+                        </span>
+                        <h2 class="mt-4 text-2xl sm:text-4xl font-black text-petrol-deep leading-tight">
+                            آماده‌اید پروژه بعدی خود را ماندگار کنید؟
+                        </h2>
+                        <p class="mt-3 text-sm sm:text-base text-slatearch-body leading-relaxed">
+                            فرم روبه‌رو را تکمیل کنید تا بر اساس نیازهای کسب‌وکار شما، نقشه راه طراحی، زمان‌بندی دقیق و پیشنهاد اختصاصی آماده شود.
+                        </p>
+                    </div>
+
+                    <!-- کارت‌های تضمین کیفیت و فرآیند مشاوره -->
+                    <div class="space-y-3.5">
+                        <div class="rounded-2xl bg-white border border-slatearch-border p-4 flex items-center gap-4 shadow-soft">
+                            <div class="w-11 h-11 rounded-xl bg-petrol-deep text-white flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-black text-petrol-deep">بررسی و پاسخ‌گویی سریع</p>
+                                <p class="text-xs text-slatearch-body mt-0.5">تحلیل اولیه پروژه و ارائه بازخورد دقیق در کمتر از ۲ ساعت کاری</p>
+                            </div>
+                        </div>
+
+                        <div class="rounded-2xl bg-white border border-slatearch-border p-4 flex items-center gap-4 shadow-soft">
+                            <div class="w-11 h-11 rounded-xl bg-petrol-rich text-white flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-black text-petrol-deep">تضمین کیفیت و پشتیبانی ۳ ماهه</p>
+                                <p class="text-xs text-slatearch-body mt-0.5">تحویل با کدنویسی استاندارد، سئو فنی کامل و گارانتی فنی پس از انتشار</p>
+                            </div>
+                        </div>
+
+                        <div class="rounded-2xl bg-white border border-slatearch-border p-4 flex items-center gap-4 shadow-soft">
+                            <div class="w-11 h-11 rounded-xl bg-petrol-mid text-white flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                            </div>
+                            <div>
+                                <p class="text-sm font-black text-petrol-deep">پیشنهاد شفاف و مرحله‌به‌مرحله</p>
+                                <p class="text-xs text-slatearch-body mt-0.5">ارائه پیش‌نمایش تعاملی پیش از اجرا و پرداخت امن در چند فاز مشخص</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ستون چپ: فرم مشاوره و ثبت پروژه -->
+                <div class="lg:col-span-7 reveal">
+                    <div id="contact-card" class="rounded-3xl bg-white border border-slatearch-border p-6 sm:p-9 shadow-elevated transition-all duration-300">
+                        <form id="contact-form" novalidate class="space-y-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label for="c-name" class="block text-xs sm:text-sm font-bold text-petrol-deep mb-2">نام و نام خانوادگی <span class="text-petrol-mid">*</span></label>
+                                    <input id="c-name" name="name" type="text" placeholder="مثلاً: امیرحسین شریفی"
+                                           class="w-full px-4 py-3.5 rounded-xl bg-slatearch-bg border border-slatearch-border text-sm text-petrol-deep placeholder:text-slatearch-muted focus:bg-white focus:border-petrol-rich focus:ring-4 focus:ring-petrol-rich/10 outline-none transition-all">
+                                    <p id="err-name" class="hidden mt-1.5 text-xs font-semibold text-rose-600">لطفاً نام و نام خانوادگی خود را وارد کنید.</p>
+                                </div>
+
+                                <div>
+                                    <label for="c-phone" class="block text-xs sm:text-sm font-bold text-petrol-deep mb-2">نام برند یا حوزه فعالیت <span class="text-petrol-mid">*</span></label>
+                                    <input id="c-phone" name="phone" type="text" placeholder="مثلاً: فروشگاه پوشاک یا شرکت معماری"
+                                           class="w-full px-4 py-3.5 rounded-xl bg-slatearch-bg border border-slatearch-border text-sm text-petrol-deep placeholder:text-slatearch-muted focus:bg-white focus:border-petrol-rich focus:ring-4 focus:ring-petrol-rich/10 outline-none transition-all">
+                                    <p id="err-phone" class="hidden mt-1.5 text-xs font-semibold text-rose-600">لطفاً نام برند یا حوزه فعالیت خود را وارد کنید.</p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="c-type" class="block text-xs sm:text-sm font-bold text-petrol-deep mb-2">نوع پروژه</label>
+                                <select id="c-type" name="type"
+                                        class="w-full px-4 py-3.5 rounded-xl bg-slatearch-bg border border-slatearch-border text-sm font-semibold text-petrol-deep focus:bg-white focus:border-petrol-rich focus:ring-4 focus:ring-petrol-rich/10 outline-none transition-all">
+                                    <option value="corporate">سایت شرکتی و معرفی برند</option>
+                                    <option value="ecommerce">فروشگاه اینترنتی اختصاصی</option>
+                                    <option value="webapp">داشبورد و وب‌اپلیکیشن</option>
+                                    <option value="landing">لندینگ‌پیج تبلیغاتی</option>
+                                    <option value="other">بازطراحی وب‌سایت فعلی / مشاوره اختصاصی</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="c-message" class="block text-xs sm:text-sm font-bold text-petrol-deep mb-2">توضیحات پروژه و خلاصه برآورد <span class="text-petrol-mid">*</span></label>
+                                <textarea id="c-message" name="message" rows="5" placeholder="درباره برند، اهداف وب‌سایت و امکانات مدنظرتان بنویسید..."
+                                          class="w-full px-4 py-3.5 rounded-xl bg-slatearch-bg border border-slatearch-border text-sm text-petrol-deep placeholder:text-slatearch-muted focus:bg-white focus:border-petrol-rich focus:ring-4 focus:ring-petrol-rich/10 outline-none transition-all resize-y"></textarea>
+                                <p id="err-message" class="hidden mt-1.5 text-xs font-semibold text-rose-600">لطفاً توضیح کوتاهی درباره پروژه خود بنویسید.</p>
+                            </div>
+
+                            <button id="c-submit-btn" type="submit" class="w-full py-4 px-6 rounded-2xl bg-petrol-deep hover:bg-petrol-rich text-white font-black text-sm sm:text-base shadow-petrol transition-all duration-300 hover:-translate-y-0.5 flex items-center justify-center gap-2.5">
+                                <span id="c-submit-text">ارسال درخواست و دریافت مشاوره رایگان</span>
+                                <svg id="c-submit-spinner" class="hidden w-5 h-5 animate-spin text-petrol-sky" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                </svg>
+                            </button>
+                        </form>
+
+                        <!-- صفحه تایید موفقیت‌آمیز ارسال (بدون بک‌اند) -->
+                        <div id="contact-success" class="hidden text-center py-8 fade-slide-up">
+                            <div class="w-16 h-16 rounded-2xl bg-petrol-deep text-petrol-sky mx-auto flex items-center justify-center shadow-petrol">
+                                <svg class="w-9 h-9" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            </div>
+                            <h3 class="mt-5 text-xl sm:text-2xl font-black text-petrol-deep">درخواست شما با موفقیت ثبت شد!</h3>
+                            <p id="success-greeting" class="mt-2.5 text-sm text-slatearch-body max-w-md mx-auto leading-relaxed">
+                                سپاس از اعتماد شما به آرسان استودیو. کارشناس ارشد طراحی محصول ما در کمتر از ۲ ساعت کاری با شما تماس خواهد گرفت.
+                            </p>
+                            <div class="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slatearch-bg border border-slatearch-border text-xs font-bold text-petrol-rich">
+                                <span>کد پیگیری شما:</span>
+                                <span id="tracking-code" class="font-black text-petrol-deep">ARS-۴۰۵۸</span>
+                            </div>
+                            <div class="mt-7">
+                                <button type="button" onclick="resetContactForm()" class="px-6 py-3 rounded-xl bg-petrol-rich hover:bg-petrol-mid text-white text-xs sm:text-sm font-bold transition-colors">
+                                    ثبت درخواست جدید
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================================================
+         فوتر آبی نفتی عمیق (Deep Petroleum Footer)
+    ========================================================================== -->
+    <footer class="bg-petrol-deep text-white pt-16 pb-10 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-white/10">
+                <div class="md:col-span-5">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-petrol-mid to-petrol-rich border border-white/15 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" viewBox="0 0 32 32" fill="none">
+                                <path d="M16 4L27 25H21.8L16 13.6L10.2 25H5L16 4Z" fill="currentColor"/>
+                                <path d="M16 19.5L19.2 25H12.8L16 19.5Z" fill="#38BDF8"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-lg font-black text-white leading-tight">آرسان استودیو</p>
+                            <p class="text-[10px] tracking-[0.2em] text-slatearch-muted uppercase">ARSAN STUDIO</p>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-sm text-slate-300 leading-relaxed max-w-sm">
+                        استودیو طراحی محصولات دیجیتال و توسعه وب؛ خلق رابط‌های کاربری لوکس، سریع و فروش‌محور برای برندهایی که به کمتر از عالی راضی نمی‌شوند.
+                    </p>
+                </div>
+
+                <div class="md:col-span-3">
+                    <h4 class="text-sm font-black text-white mb-4">دسترسی سریع</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-300">
+                        <li><a href="#services" class="hover:text-petrol-sky transition-colors">خدمات تخصصی</a></li>
+                        <li><a href="#portfolio" class="hover:text-petrol-sky transition-colors">نمونه‌کارهای منتخب</a></li>
+                        <li><a href="#comparison" class="hover:text-petrol-sky transition-colors">مقایسه کیفیت طراحی</a></li>
+                        <li><a href="#estimator" class="hover:text-petrol-sky transition-colors">برآوردگر هوشمند پروژه</a></li>
+                    </ul>
+                </div>
+
+                <div class="md:col-span-4 flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-sm font-black text-white mb-4">ساعات پاسخ‌گویی استودیو</h4>
+                        <p class="text-sm text-slate-300">شنبه تا چهارشنبه: ۹:۰۰ تا ۱۸:۳۰</p>
+                        <p class="text-sm text-slate-300 mt-1">پنج‌شنبه‌ها: ۹:۰۰ تا ۱۴:۰۰</p>
+                    </div>
+                    <div class="mt-6">
+                        <a href="#hero" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/8 hover:bg-white/15 border border-white/15 text-xs font-bold text-white transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+                            <span>بازگشت به بالای صفحه</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-7 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slatearch-muted">
+                <p>© ۱۴۰۵ تمامی حقوق برای <strong class="text-white">آرسان استودیو | ARSAN STUDIO</strong> محفوظ است.</p>
+                <p>طراحی و مهندسی‌شده با دقت پیکسلی و استانداردهای مدرن وب</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =========================================================================
+         مودال مطالعه موردی نمونه‌کار (Portfolio Case Study Modal)
+    ========================================================================== -->
+    <div id="case-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" class="fixed inset-0 z-[70] hidden items-center justify-center p-4 sm:p-6">
+        <div id="case-modal-backdrop" class="absolute inset-0 bg-petrol-deep/80 backdrop-blur-md"></div>
+        <div class="relative z-10 w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white text-slatearch-dark shadow-2xl border border-slatearch-border fade-slide-up">
+            <!-- هدر مودال -->
+            <div class="sticky top-0 z-20 bg-white/95 backdrop-blur-md px-6 py-4 border-b border-slatearch-border flex items-center justify-between gap-4">
+                <div>
+                    <span id="modal-category" class="text-[11px] font-extrabold text-petrol-mid bg-slatearch-bg px-2.5 py-1 rounded-lg"></span>
+                    <h3 id="modal-title" class="mt-1 text-lg sm:text-xl font-black text-petrol-deep"></h3>
+                </div>
+                <button id="close-case-modal" type="button" aria-label="بستن پنجره" class="p-2.5 rounded-xl bg-slatearch-bg hover:bg-petrol-deep hover:text-white text-petrol-deep transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <!-- بدنه مودال -->
+            <div class="p-6 sm:p-8 space-y-6">
+                <!-- پیش‌نمایش گسترده رابط کاربری -->
+                <div id="modal-preview" class="rounded-2xl overflow-hidden border border-slatearch-border shadow-soft"></div>
+
+                <!-- ۳ نتیجه کلیدی -->
+                <div id="modal-metrics" class="grid grid-cols-1 sm:grid-cols-3 gap-3.5"></div>
+
+                <!-- چالش و راهکار -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div class="rounded-2xl bg-slatearch-bg border border-slatearch-border p-5">
+                        <h4 class="text-sm font-black text-petrol-deep mb-2">چالش کارفرما</h4>
+                        <p id="modal-challenge" class="text-xs sm:text-sm text-slatearch-body leading-relaxed"></p>
+                    </div>
+                    <div class="rounded-2xl bg-petrol-deep text-white p-5">
+                        <h4 class="text-sm font-black text-petrol-sky mb-2">راهکار مهندسی آرسان استودیو</h4>
+                        <p id="modal-solution" class="text-xs sm:text-sm text-slate-200 leading-relaxed"></p>
+                    </div>
+                </div>
+
+                <!-- تگ‌های فناوری و دکمه سفارش پروژه مشابه -->
+                <div class="pt-4 border-t border-slatearch-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div id="modal-tech" class="flex flex-wrap gap-2"></div>
+                    <button id="modal-order-btn" type="button" class="px-6 py-3.5 rounded-xl bg-petrol-rich hover:bg-petrol-mid text-white text-xs sm:text-sm font-black shadow-petrol transition-all shrink-0">
+                        سفارش پروژه مشابه
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         اعلان شناور پایین سمت چپ (Toast Notification)
+    ========================================================================== -->
+    <div id="toast-box" role="status" aria-live="polite" class="fixed bottom-5 left-5 z-[90] translate-y-20 opacity-0 pointer-events-none transition-all duration-300">
+        <div class="flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-petrol-deep text-white border border-petrol-sky/40 shadow-2xl">
+            <span class="w-7 h-7 rounded-xl bg-petrol-sky/20 text-petrol-sky flex items-center justify-center shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </span>
+            <span id="toast-message" class="text-xs sm:text-sm font-bold"></span>
+        </div>
+    </div>
+
+    <!-- =========================================================================
+         اسکریپت یکپارچه و تمیز تمام تعامل‌ها (Vanilla JS - Zero Backend)
+    ========================================================================== -->
+    <script>
+        /* ---------------------------------------------------------------------
+           توابع کمکی: تبدیل ارقام به فارسی و نمایش Toast Notification
+        ---------------------------------------------------------------------- */
+        const PERSIAN_DIGITS = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        function toFaNum(input) {
+            return String(input).replace(/\d/g, (d) => PERSIAN_DIGITS[Number(d)]);
+        }
+
+        let toastTimer = null;
+        function showToast(message) {
+            const box = document.getElementById('toast-box');
+            const msgEl = document.getElementById('toast-message');
+            if (!box || !msgEl) return;
+            msgEl.textContent = message;
+            box.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            box.classList.add('translate-y-0', 'opacity-100');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                box.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+                box.classList.remove('translate-y-0', 'opacity-100');
+            }, 3200);
+        }
+
+        // کپی ایمن در کلیپ‌بورد سازگار با iFrame
+        function copyText(text, successMsg) {
+            try {
+                const tempInput = document.createElement('textarea');
+                tempInput.value = text;
+                tempInput.setAttribute('readonly', '');
+                tempInput.style.position = 'fixed';
+                tempInput.style.opacity = '0';
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                tempInput.setSelectionRange(0, 99999);
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                showToast(successMsg || 'در حافظه کپی شد');
+            } catch (err) {
+                showToast('کپی انجام نشد، لطفاً به صورت دستی کپی کنید');
+            }
+        }
+
+        /* ---------------------------------------------------------------------
+           ۱. نوار پیشرفت اسکرول، تغییر وضعیت ناوبری و منوی موبایل
+        ---------------------------------------------------------------------- */
+        const progressEl = document.getElementById('scroll-progress');
+        const navbarEl = document.getElementById('main-navbar');
+        const navbarInner = document.getElementById('navbar-inner');
+        const navBrandFa = document.getElementById('nav-brand-fa');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const openMobileBtn = document.getElementById('open-mobile-menu');
+
+        function handleScrollUI() {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const pct = docHeight > 0 ? Math.min(100, (scrollTop / docHeight) * 100) : 0;
+            if (progressEl) progressEl.style.width = pct + '%';
+
+            const scrolled = scrollTop > 48;
+            navbarEl.classList.toggle('is-scrolled', scrolled);
+            navbarInner.classList.toggle('h-16', scrolled);
+            navbarInner.classList.toggle('h-20', !scrolled);
+
+            if (scrolled) {
+                navBrandFa.classList.remove('text-white');
+                navBrandFa.classList.add('text-petrol-deep');
+                openMobileBtn.classList.remove('text-white', 'hover:bg-white/10');
+                openMobileBtn.classList.add('text-petrol-deep', 'hover:bg-slatearch-bg');
+                navLinks.forEach((a) => {
+                    a.classList.remove('text-white/85', 'hover:text-white', 'hover:bg-white/10');
+                    a.classList.add('text-slatearch-dark', 'hover:text-petrol-rich', 'hover:bg-slatearch-bg');
+                });
+            } else {
+                navBrandFa.classList.add('text-white');
+                navBrandFa.classList.remove('text-petrol-deep');
+                openMobileBtn.classList.add('text-white', 'hover:bg-white/10');
+                openMobileBtn.classList.remove('text-petrol-deep', 'hover:bg-slatearch-bg');
+                navLinks.forEach((a) => {
+                    a.classList.add('text-white/85', 'hover:text-white', 'hover:bg-white/10');
+                    a.classList.remove('text-slatearch-dark', 'hover:text-petrol-rich', 'hover:bg-slatearch-bg');
+                });
+            }
+        }
+        window.addEventListener('scroll', handleScrollUI, { passive: true });
+        handleScrollUI();
+
+        // منوی کشویی موبایل
+        const mobileDrawer = document.getElementById('mobile-drawer');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+        function openMobileMenu() {
+            mobileDrawer.classList.remove('translate-x-full');
+            mobileOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeMobileMenu() {
+            mobileDrawer.classList.add('translate-x-full');
+            mobileOverlay.classList.add('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+        }
+        document.getElementById('open-mobile-menu').addEventListener('click', openMobileMenu);
+        document.getElementById('close-mobile-menu').addEventListener('click', closeMobileMenu);
+        mobileOverlay.addEventListener('click', closeMobileMenu);
+        document.querySelectorAll('.mobile-link').forEach((link) => link.addEventListener('click', closeMobileMenu));
+
+        /* ---------------------------------------------------------------------
+           ۲. کانواس شبکه هندسی تعاملی هیرو + افکت 3D Tilt و سوییچ دستگاه
+        ---------------------------------------------------------------------- */
+        (function initHeroCanvas() {
+            try {
+                const canvas = document.getElementById('hero-constellation');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                let width = 0, height = 0;
+                let particles = [];
+                const mouse = { x: -9999, y: -9999 };
+
+                function resize() {
+                    const rect = canvas.parentElement.getBoundingClientRect();
+                    width = canvas.width = rect.width;
+                    height = canvas.height = rect.height;
+                    const count = Math.min(46, Math.max(20, Math.floor(width / 32)));
+                    particles = Array.from({ length: count }, () => ({
+                        x: Math.random() * width,
+                        y: Math.random() * height,
+                        vx: (Math.random() - 0.5) * 0.42,
+                        vy: (Math.random() - 0.5) * 0.42,
+                        r: Math.random() * 1.8 + 1
+                    }));
+                }
+
+                canvas.parentElement.addEventListener('mousemove', (e) => {
+                    const rect = canvas.getBoundingClientRect();
+                    mouse.x = e.clientX - rect.left;
+                    mouse.y = e.clientY - rect.top;
+                });
+                canvas.parentElement.addEventListener('mouseleave', () => {
+                    mouse.x = -9999;
+                    mouse.y = -9999;
+                });
+
+                function animate() {
+                    ctx.clearRect(0, 0, width, height);
+                    for (let i = 0; i < particles.length; i++) {
+                        const p = particles[i];
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        if (p.x < 0 || p.x > width) p.vx *= -1;
+                        if (p.y < 0 || p.y > height) p.vy *= -1;
+
+                        // تعامل ملایم با نشانگر ماوس
+                        const dxm = mouse.x - p.x;
+                        const dym = mouse.y - p.y;
+                        const distM = Math.hypot(dxm, dym);
+                        if (distM < 150) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(mouse.x, mouse.y);
+                            ctx.strokeStyle = `rgba(56, 189, 248, ${(1 - distM / 150) * 0.35})`;
+                            ctx.lineWidth = 1;
+                            ctx.stroke();
+                        }
+
+                        // اتصال به ذرات مجاور
+                        for (let j = i + 1; j < particles.length; j++) {
+                            const p2 = particles[j];
+                            const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                            if (dist < 130) {
+                                ctx.beginPath();
+                                ctx.moveTo(p.x, p.y);
+                                ctx.lineTo(p2.x, p2.y);
+                                ctx.strokeStyle = `rgba(226, 232, 240, ${(1 - dist / 130) * 0.14})`;
+                                ctx.lineWidth = 0.8;
+                                ctx.stroke();
+                            }
+                        }
+
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(56, 189, 248, 0.55)';
+                        ctx.fill();
+                    }
+                    requestAnimationFrame(animate);
+                }
+
+                window.addEventListener('resize', resize);
+                resize();
+                animate();
+            } catch (e) {
+                // fallback آرام بدون خطا در کنسول
+            }
+        })();
+
+        // افکت سه‌بعدی Mouse Tilt روی ماکاپ هیرو
+        (function initHeroTilt() {
+            const shell = document.getElementById('hero-tilt-shell');
+            if (!shell || window.matchMedia('(pointer: coarse)').matches) return;
+            const stage = shell.parentElement;
+            stage.addEventListener('mousemove', (e) => {
+                const rect = stage.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                shell.style.transform = `rotateY(${(x * 11).toFixed(2)}deg) rotateX(${(-y * 9).toFixed(2)}deg)`;
+            });
+            stage.addEventListener('mouseleave', () => {
+                shell.style.transform = 'rotateY(0deg) rotateX(0deg)';
+            });
+        })();
+
+        // سوییچ نمای دسکتاپ و موبایل در هیرو
+        function switchHeroDevice(mode) {
+            const desktopView = document.getElementById('hero-desktop-view');
+            const mobileView = document.getElementById('hero-mobile-view');
+            const btnD = document.getElementById('btn-view-desktop');
+            const btnM = document.getElementById('btn-view-mobile');
+
+            if (mode === 'desktop') {
+                desktopView.classList.remove('hidden');
+                mobileView.classList.add('hidden');
+                btnD.className = 'flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-white text-petrol-deep shadow-md transition-all';
+                btnM.className = 'flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-slate-200 hover:text-white transition-all';
+            } else {
+                desktopView.classList.add('hidden');
+                mobileView.classList.remove('hidden');
+                btnM.className = 'flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-white text-petrol-deep shadow-md transition-all';
+                btnD.className = 'flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-slate-200 hover:text-white transition-all';
+            }
+        }
+
+        /* ---------------------------------------------------------------------
+           ۳. شمارنده متحرک آمار KPI و انیمیشن Scroll Reveal
+        ---------------------------------------------------------------------- */
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.14 });
+        document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+
+        let kpiStarted = false;
+        const kpiObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting && !kpiStarted) {
+                    kpiStarted = true;
+                    document.querySelectorAll('.kpi-counter').forEach((counter) => {
+                        const target = parseFloat(counter.dataset.target);
+                        const decimals = parseInt(counter.dataset.decimal || '0', 10);
+                        const prefix = counter.dataset.prefix || '';
+                        const suffix = counter.dataset.suffix || '';
+                        const duration = 1500;
+                        const start = performance.now();
+
+                        function tick(now) {
+                            const progress = Math.min(1, (now - start) / duration);
+                            const eased = 1 - Math.pow(1 - progress, 3);
+                            const current = (target * eased).toFixed(decimals);
+                            counter.textContent = prefix + toFaNum(current) + suffix;
+                            if (progress < 1) requestAnimationFrame(tick);
+                        }
+                        requestAnimationFrame(tick);
+                    });
+                    kpiObserver.disconnect();
+                }
+            });
+        }, { threshold: 0.3 });
+        const kpiContainer = document.getElementById('kpi-container');
+        if (kpiContainer) kpiObserver.observe(kpiContainer);
+
+        /* ---------------------------------------------------------------------
+           ۴. افکت نور دنبال‌کننده ماوس (Spotlight) روی کارت‌های بنتو
+        ---------------------------------------------------------------------- */
+        document.querySelectorAll('.bento-spotlight').forEach((card) => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+                card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+            });
+        });
+
+        /* ---------------------------------------------------------------------
+           ۵. داده‌ها و رندر گالری ۶ نمونه‌کار اختصاصی + مودال مطالعه موردی
+        ---------------------------------------------------------------------- */
+        const PORTFOLIO_ITEMS = [
+            {
+                id: 'note-gallery',
+                title: 'نُت گالری',
+                subtitle: 'فروشگاه آنلاین عطر و ادکلن لوکس',
+                category: 'ecommerce',
+                categoryLabel: 'فروشگاه اینترنتی',
+                url: 'notegallery.ir',
+                challenge: 'فروشگاه قبلی نرخ پرش بالایی داشت و کاربران نمی‌توانستند بر اساس نت‌های بویایی، فصل و طبع عطر انتخاب دقیق و سریعی داشته باشند.',
+                solution: 'طراحی فیلتر تعاملی نت‌های بویایی، کارت‌های محصول مینیمال با حس لوکس، جستجوی آنی و سبد خرید کشویی ۲ مرحله‌ای با سرعت لود زیر یک ثانیه.',
+                metrics: [
+                    { label: 'افزایش نرخ تبدیل', value: '+۲۱۰٪' },
+                    { label: 'سرعت باز شدن صفحه', value: '۰.۶ ثانیه' },
+                    { label: 'رشد خرید مجدد', value: '+۶۸٪' }
+                ],
+                tech: ['طراحی UI/UX اختصاصی', 'Tailwind CSS', 'سبد خرید سریع', 'سئو فروشگاهی'],
+                renderMockup: () => `
+                    <div class="bg-[#082032] text-white p-4 h-52 flex flex-col justify-between">
+                        <div class="flex items-center justify-between text-[10px] border-b border-white/10 pb-2">
+                            <span class="font-black tracking-wider">نُت گالری</span>
+                            <div class="flex gap-2 text-slate-300"><span>عطر نیش</span><span>مردانه</span><span>زنانه</span></div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-3 items-center my-auto">
+                            <div class="col-span-7 space-y-1.5">
+                                <span class="text-[9px] text-petrol-sky font-bold">کالکشن پاییزی ۱۴۰۵</span>
+                                <p class="text-sm font-black leading-snug">رایحه امضای شخصیت شما</p>
+                                <span class="inline-block px-2.5 py-1 rounded-lg bg-white text-petrol-deep text-[10px] font-black">کشف رایحه‌ها</span>
+                            </div>
+                            <div class="col-span-5 flex justify-center">
+                                <div class="w-20 h-24 rounded-2xl bg-gradient-to-b from-petrol-mid to-petrol-rich border border-white/20 flex flex-col items-center justify-center shadow-lg">
+                                    <div class="w-5 h-3 bg-petrol-sky/80 rounded-t-sm mb-1"></div>
+                                    <div class="w-11 h-14 rounded-lg bg-white/12 border border-white/25 flex items-center justify-center text-[8px] font-bold">NOIR</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-[9px] text-slate-300">
+                            <span>فیلتر بر اساس نت بویایی</span>
+                            <span class="text-petrol-sky font-bold">ارسال رایگان VIP</span>
+                        </div>
+                    </div>`
+            },
+            {
+                id: 'vitrin-omdeh',
+                title: 'ویترین عمده',
+                subtitle: 'پلتفرم تجارت B2B و پخش سراسری',
+                category: 'ecommerce',
+                categoryLabel: 'فروشگاه اینترنتی',
+                url: 'vitrinomdeh.com',
+                challenge: 'سفارش‌گیری عمده از طریق تماس تلفنی و لیست‌های PDF باعث خطای موجودی و اتلاف وقت تیم فروش و بنکداران می‌شد.',
+                solution: 'ایجاد رابط سفارش‌گذاری جدولی سریع، محاسبه خودکار تخفیف پلکانی بر اساس تعداد کارتن و صدور آنی پیش‌فاکتور آنلاین.',
+                metrics: [
+                    { label: 'کاهش زمان ثبت سفارش', value: '۷۴٪-' },
+                    { label: 'حجم سفارش آنلاین', value: '+۳.۴ برابر' },
+                    { label: 'امتیاز سرعت موبایل', value: '۹۸/۱۰۰' }
+                ],
+                tech: ['معماری B2B', 'کاتالوگ هوشمند', 'پیش‌فاکتور زنده', 'واکنش‌گرا'],
+                renderMockup: () => `
+                    <div class="bg-[#F4F6F8] text-slatearch-dark p-4 h-52 flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black text-petrol-deep">ویترین عمده B2B</span>
+                            <span class="px-2 py-0.5 rounded bg-petrol-rich text-white text-[9px] font-bold">پنل خریدار عمده</span>
+                        </div>
+                        <div class="bg-white rounded-xl border border-slatearch-border p-3 space-y-2 shadow-sm">
+                            <div class="flex items-center justify-between text-[10px] border-b border-slatearch-border pb-1.5">
+                                <span class="font-bold text-petrol-deep">پک ۲۴ عددی قهوه اسپرسو</span>
+                                <span class="text-petrol-mid font-black">تخفیف ۱۸٪</span>
+                            </div>
+                            <div class="flex items-center justify-between text-[10px]">
+                                <span class="text-slatearch-body">تعداد انتخابی: ۵ کارتن</span>
+                                <span class="px-2 py-0.5 rounded bg-petrol-deep text-white font-bold">صدور پیش‌فاکتور</span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 text-center">
+                            <div class="rounded-lg bg-white border border-slatearch-border p-1.5"><p class="text-[10px] font-black text-petrol-deep">+۱۲۰۰</p><p class="text-[8px] text-slatearch-body">تامین‌کننده</p></div>
+                            <div class="rounded-lg bg-petrol-deep text-white p-1.5"><p class="text-[10px] font-black text-petrol-sky">آنی</p><p class="text-[8px] text-slate-300">استعلام قیمت</p></div>
+                            <div class="rounded-lg bg-white border border-slatearch-border p-1.5"><p class="text-[10px] font-black text-petrol-deep">۲۴ ساعته</p><p class="text-[8px] text-slatearch-body">ارسال بار</p></div>
+                        </div>
+                    </div>`
+            },
+            {
+                id: 'taraz-hooshmand',
+                title: 'تراز هوشمند',
+                subtitle: 'داشبورد مالی و حسابداری ابری',
+                category: 'webapp',
+                categoryLabel: 'داشبورد و وب‌اپ',
+                url: 'app.tarazcloud.ir',
+                challenge: 'کاربران غیرحسابدار با پنل‌های شلوغ مالی دچار سردرگمی می‌شدند و گزارش سود و زیان ماهانه به سختی قابل تحلیل بود.',
+                solution: 'بازطراحی کامل UX داشبورد با کارت‌های خلاصه جریان نقدینگی، نمودارهای تعاملی و جدول‌های قابل فیلتر با کنتراست بصری بالا.',
+                metrics: [
+                    { label: 'رضایت کاربران پنل', value: '۹۹٪' },
+                    { label: 'سرعت گزارش‌گیری', value: '۰.۴ ثانیه' },
+                    { label: 'کاهش تیکت پشتیبانی', value: '۶۲٪-' }
+                ],
+                tech: ['Design System', 'مصورسازی داده', 'داشبورد واکنش‌گرا', 'SVG Charts'],
+                renderMockup: () => `
+                    <div class="bg-[#0B3954] text-white p-4 h-52 flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black">تراز هوشمند</span>
+                            <span class="text-[9px] bg-petrol-sky/20 text-petrol-sky px-2 py-0.5 rounded font-bold">جریان نقدینگی مثبت</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <div class="rounded-xl bg-white/10 border border-white/15 p-2.5">
+                                <p class="text-[9px] text-slate-300">درآمد خالص فصل</p>
+                                <p class="text-sm font-black mt-0.5">۴.۲ میلیارد</p>
+                            </div>
+                            <div class="rounded-xl bg-white text-petrol-deep p-2.5">
+                                <p class="text-[9px] text-slatearch-body">حاشیه سود</p>
+                                <p class="text-sm font-black mt-0.5 text-petrol-rich">+۳۱.۵٪</p>
+                            </div>
+                        </div>
+                        <div class="rounded-xl bg-petrol-deep/80 p-2.5 flex items-end gap-1.5 h-14">
+                            <span class="flex-1 bg-white/25 rounded-t h-5"></span>
+                            <span class="flex-1 bg-white/35 rounded-t h-7"></span>
+                            <span class="flex-1 bg-petrol-sky/60 rounded-t h-6"></span>
+                            <span class="flex-1 bg-petrol-sky rounded-t h-10"></span>
+                            <span class="flex-1 bg-white rounded-t h-9"></span>
+                        </div>
+                    </div>`
+            },
+            {
+                id: 'parseh-arch',
+                title: 'گروه معماری پارسه',
+                subtitle: 'وب‌سایت شرکت مهندسی و طراحی داخلی',
+                category: 'luxury',
+                categoryLabel: 'شرکتی و لوکس',
+                url: 'parseh-arch.ir',
+                challenge: 'وب‌سایت قبلی نتوانسته بود جایگاه لوکس پروژه‌های ساختمانی و طراحی داخلی این دفتر معماری را به کارفرمایان سطح بالا نمایش دهد.',
+                solution: 'طراحی گرید معماری مینیمال با فضای سفید گسترده، تایپوگرافی شاخص، گالری تمام‌صفحه پروژه‌ها و فرم رزرو جلسه مشاوره حضوری.',
+                metrics: [
+                    { label: 'درخواست مشاوره پروژه', value: '+۱۶۵٪' },
+                    { label: 'میانگین حضور کاربر', value: '۴.۳ دقیقه' },
+                    { label: 'امتیاز Lighthouse', value: '۱۰۰/۱۰۰' }
+                ],
+                tech: ['طراحی مینیمال لوکس', 'گالری معماری', 'انیمیشن اسکرول', 'سئو تخصصی'],
+                renderMockup: () => `
+                    <div class="bg-white text-petrol-deep p-4 h-52 flex flex-col justify-between border-t border-slatearch-border">
+                        <div class="flex items-center justify-between border-b border-slatearch-border pb-2">
+                            <span class="text-xs font-black tracking-tight">PARSEH ARCH</span>
+                            <span class="text-[9px] text-slatearch-body">معماری • طراحی داخلی</span>
+                        </div>
+                        <div class="grid grid-cols-12 gap-3 items-center my-auto">
+                            <div class="col-span-6 space-y-1.5">
+                                <p class="text-[9px] font-bold text-petrol-mid">پروژه شاخص ۱۴۰۵</p>
+                                <p class="text-sm font-black leading-tight">ویلای مدرن لواسان</p>
+                                <p class="text-[9px] text-slatearch-body">مساحت ۱,۲۰۰ متر • بتنی مینیمال</p>
+                            </div>
+                            <div class="col-span-6 h-24 rounded-xl bg-gradient-to-tr from-petrol-deep via-petrol-rich to-slate-400 p-2 flex items-end justify-end relative overflow-hidden">
+                                <div class="w-12 h-16 bg-white/15 border border-white/30 backdrop-blur-sm rounded-t-md"></div>
+                                <div class="w-8 h-10 bg-petrol-sky/30 border border-white/30 mr-1 rounded-t-md"></div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between text-[9px] text-slatearch-muted">
+                            <span>۰۱ / گالری منتخب</span>
+                            <span class="text-petrol-deep font-bold">مشاهده پرونده ←</span>
+                        </div>
+                    </div>`
+            },
+            {
+                id: 'zarin-tarash',
+                title: 'زرین‌تراش',
+                subtitle: 'گالری آنلاین جواهرات و اکسسوری دست‌ساز',
+                category: 'luxury',
+                categoryLabel: 'شرکتی و لوکس',
+                url: 'zarintarash.ir',
+                challenge: 'ایجاد اعتماد برای خرید آنلاین جواهرات دست‌ساز و نمایش ظرافت طراحی بدون شلوغی‌های مرسوم سایت‌های فروشگاهی.',
+                solution: 'خلق فضایی گالری‌گونه با پالت سرمه‌ای-نفتی و سفید، شناسنامه اصالت دیجیتال برای هر اثر و بزرگ‌نمایی دقیق جزئیات.',
+                metrics: [
+                    { label: 'رشد فروش آنلاین', value: '+۱۴۲٪' },
+                    { label: 'میانگین ارزش سبد', value: '+۴۸٪' },
+                    { label: 'سرعت بارگذاری', value: '۰.۷ ثانیه' }
+                ],
+                tech: ['هویت بصری لوکس', 'شناسنامه دیجیتال', 'تجربه موبایل', 'کدنویسی تمیز'],
+                renderMockup: () => `
+                    <div class="bg-gradient-to-br from-[#082032] via-[#0B3954] to-[#125073] text-white p-4 h-52 flex flex-col justify-between">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-black">گالری زرین‌تراش</span>
+                            <span class="text-[9px] border border-white/25 px-2 py-0.5 rounded-full">دست‌ساز اصیل</span>
+                        </div>
+                        <div class="flex items-center justify-between gap-3 my-auto">
+                            <div class="space-y-1.5">
+                                <p class="text-[9px] text-petrol-sky font-bold">مجموعه محدود</p>
+                                <p class="text-sm font-black">انگشتر فیروزه و نقره</p>
+                                <p class="text-[10px] text-slate-300">همراه با کد اصالت اختصاصی</p>
+                            </div>
+                            <div class="w-20 h-20 rounded-full border-2 border-petrol-sky/60 flex items-center justify-center bg-white/5 shrink-0">
+                                <div class="w-10 h-10 rotate-45 rounded-lg bg-gradient-to-br from-petrol-sky to-white shadow-sky-glow"></div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between text-[9px] text-slate-300 border-t border-white/10 pt-2">
+                            <span>بسته‌بندی هدیه لوکس</span>
+                            <span class="text-white font-bold">رزرو مشاوره خرید</span>
+                        </div>
+                    </div>`
+            },
+            {
+                id: 'payesh-gheimat',
+                title: 'پایش قیمت',
+                subtitle: 'سامانه هوشمند مقایسه قیمت و تحلیل بازار',
+                category: 'webapp',
+                categoryLabel: 'داشبورد و وب‌اپ',
+                url: 'payeshmarket.ir',
+                challenge: 'کاربران نیاز داشتند تغییرات لحظه‌ای قیمت کالاها را میان ده‌ها فروشگاه مقایسه کرده و هشدار کاهش قیمت تنظیم کنند.',
+                solution: 'طراحی رابط جستجوی فوری، نمودار تاریخچه قیمت تعاملی و کارت‌های مقایسه‌ای خوانا با کمترین بار شناختی روی کاربر.',
+                metrics: [
+                    { label: 'بازدید روزانه فعال', value: '+۴۵ هزار' },
+                    { label: 'سرعت جستجوی آنی', value: '۰.۲ ثانیه' },
+                    { label: 'نرخ بازگشت کاربر', value: '۷۸٪' }
+                ],
+                tech: ['وب‌اپلیکیشن پرسرعت', 'نمودار تاریخچه قیمت', 'فیلتر چندگانه', 'UI مدرن'],
+                renderMockup: () => `
+                    <div class="bg-[#F4F6F8] text-petrol-deep p-4 h-52 flex flex-col justify-between">
+                        <div class="flex items-center gap-2 bg-white rounded-xl border border-slatearch-border px-3 py-1.5">
+                            <span class="w-2 h-2 rounded-full bg-petrol-sky"></span>
+                            <span class="text-[10px] text-slatearch-body">مقایسه قیمت لپ‌تاپ و کالای دیجیتال...</span>
+                        </div>
+                        <div class="bg-white rounded-xl border border-slatearch-border p-3 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-black">کمترین قیمت بازار</span>
+                                <span class="text-[10px] font-black text-petrol-rich bg-sky-50 px-2 py-0.5 rounded">۱۲٪ ارزان‌تر</span>
+                            </div>
+                            <svg viewBox="0 0 220 42" class="w-full h-9">
+                                <path d="M4 34 L45 28 L88 30 L132 18 L174 22 L216 8" fill="none" stroke="#0B3954" stroke-width="2.5" stroke-linecap="round"/>
+                                <circle cx="216" cy="8" r="3.5" fill="#38BDF8"/>
+                            </svg>
+                        </div>
+                        <div class="flex items-center justify-between text-[9px] text-slatearch-body">
+                            <span>پایش ۲۴ ساعته ۸۵ فروشگاه</span>
+                            <span class="font-bold text-petrol-deep">تنظیم هشدار قیمت</span>
+                        </div>
+                    </div>`
+            }
+        ];
+
+        const portfolioGrid = document.getElementById('portfolio-grid');
+        let activePortfolioFilter = 'all';
+
+        function renderPortfolio(filter = 'all') {
+            activePortfolioFilter = filter;
+            const list = filter === 'all' ? PORTFOLIO_ITEMS : PORTFOLIO_ITEMS.filter((item) => item.category === filter);
+            portfolioGrid.innerHTML = list.map((item) => `
+                <article onclick="openCaseModal('${item.id}')" tabindex="0" role="button" aria-label="مشاهده مطالعه موردی ${item.title}"
+                         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openCaseModal('${item.id}')}"
+                         class="group cursor-pointer rounded-3xl bg-white border border-slatearch-border overflow-hidden shadow-soft hover:shadow-elevated hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-petrol-rich fade-slide-up">
+                    <div>
+                        <!-- قاب مرورگر اختصاصی -->
+                        <div class="bg-slatearch-bg px-4 py-2.5 border-b border-slatearch-border flex items-center justify-between">
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+                                <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+                                <span class="w-2 h-2 rounded-full bg-petrol-rich"></span>
+                            </div>
+                            <span class="text-[10px] font-medium text-slatearch-muted" dir="ltr">${item.url}</span>
+                        </div>
+                        <!-- ماکاپ کدنویسی‌شده اختصاصی -->
+                        <div class="overflow-hidden group-hover:scale-[1.02] transition-transform duration-500">
+                            ${item.renderMockup()}
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-white border-t border-slatearch-border flex items-center justify-between gap-3">
+                        <div>
+                            <span class="text-[11px] font-extrabold text-petrol-mid">${item.categoryLabel}</span>
+                            <h3 class="mt-1 text-lg font-black text-petrol-deep group-hover:text-petrol-rich transition-colors">${item.title}</h3>
+                            <p class="mt-0.5 text-xs text-slatearch-body">${item.subtitle}</p>
+                        </div>
+                        <span class="w-10 h-10 rounded-xl bg-slatearch-bg group-hover:bg-petrol-deep group-hover:text-white text-petrol-deep flex items-center justify-center shrink-0 transition-colors">
+                            <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6"/></svg>
+                        </span>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        document.querySelectorAll('.portfolio-filter-btn').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.portfolio-filter-btn').forEach((b) => {
+                    b.className = 'portfolio-filter-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slatearch-bg text-slatearch-body hover:bg-slatearch-border/70 transition-all';
+                });
+                btn.className = 'portfolio-filter-btn px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-petrol-deep text-white shadow-md transition-all';
+                renderPortfolio(btn.dataset.filter);
+            });
+        });
+        renderPortfolio('all');
+
+        // مودال مطالعه موردی (Case Study Modal)
+        const caseModal = document.getElementById('case-modal');
+        let currentModalProject = null;
+
+        function openCaseModal(id) {
+            const item = PORTFOLIO_ITEMS.find((p) => p.id === id);
+            if (!item) return;
+            currentModalProject = item;
+
+            document.getElementById('modal-category').textContent = item.categoryLabel;
+            document.getElementById('modal-title').textContent = `${item.title} — ${item.subtitle}`;
+            document.getElementById('modal-preview').innerHTML = `
+                <div class="bg-slatearch-bg px-4 py-2.5 border-b border-slatearch-border flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-petrol-rich"></span>
+                    </div>
+                    <span class="text-xs font-semibold text-slatearch-body" dir="ltr">https://${item.url}</span>
+                </div>
+                ${item.renderMockup()}
+            `;
+            document.getElementById('modal-metrics').innerHTML = item.metrics.map((m) => `
+                <div class="rounded-2xl bg-slatearch-bg border border-slatearch-border p-4 text-center">
+                    <p class="text-xl font-black text-petrol-deep">${m.value}</p>
+                    <p class="text-xs font-semibold text-slatearch-body mt-1">${m.label}</p>
+                </div>
+            `).join('');
+            document.getElementById('modal-challenge').textContent = item.challenge;
+            document.getElementById('modal-solution').textContent = item.solution;
+            document.getElementById('modal-tech').innerHTML = item.tech.map((t) => `
+                <span class="px-3 py-1 rounded-lg bg-slatearch-bg border border-slatearch-border text-xs font-bold text-petrol-rich">${t}</span>
+            `).join('');
+
+            caseModal.classList.remove('hidden');
+            caseModal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCaseModal() {
+            caseModal.classList.add('hidden');
+            caseModal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('close-case-modal').addEventListener('click', closeCaseModal);
+        document.getElementById('case-modal-backdrop').addEventListener('click', closeCaseModal);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !caseModal.classList.contains('hidden')) closeCaseModal();
+        });
+
+        document.getElementById('modal-order-btn').addEventListener('click', () => {
+            if (!currentModalProject) return;
+            const catMap = { ecommerce: 'ecommerce', webapp: 'webapp', luxury: 'corporate' };
+            const mappedType = catMap[currentModalProject.category] || 'corporate';
+            closeCaseModal();
+
+            // انتخاب خودکار نوع پروژه در برآوردگر و اسکرول نرم
+            const radio = document.querySelector(`input[name="projectType"][value="${mappedType}"]`);
+            if (radio) {
+                radio.checked = true;
+                updateEstimatorUI();
+            }
+            const estSection = document.getElementById('estimator');
+            if (estSection) estSection.scrollIntoView({ behavior: 'smooth' });
+            showToast(`نوع پروژه متناسب با «${currentModalProject.title}» در برآوردگر انتخاب شد`);
+        });
+
+        /* ---------------------------------------------------------------------
+           ۶. اسلایدر تعاملی قبل و بعد (Mouse, Touch & Keyboard)
+        ---------------------------------------------------------------------- */
+        (function initBeforeAfterSlider() {
+            const container = document.getElementById('ba-slider');
+            const beforeLayer = document.getElementById('ba-before-layer');
+            const handle = document.getElementById('ba-handle');
+            if (!container || !beforeLayer || !handle) return;
+
+            let percent = 50;
+            let dragging = false;
+
+            function setPosition(p) {
+                percent = Math.max(8, Math.min(92, p));
+                handle.style.left = percent + '%';
+                handle.setAttribute('aria-valuenow', Math.round(percent));
+                beforeLayer.style.clipPath = `inset(0 ${100 - percent}% 0 0)`;
+            }
+
+            function updateFromClientX(clientX) {
+                const rect = container.getBoundingClientRect();
+                const ratio = ((clientX - rect.left) / rect.width) * 100;
+                setPosition(ratio);
+            }
+
+            // رویدادهای ماوس و لمس
+            container.addEventListener('pointerdown', (e) => {
+                dragging = true;
+                container.setPointerCapture(e.pointerId);
+                updateFromClientX(e.clientX);
+            });
+            container.addEventListener('pointermove', (e) => {
+                if (!dragging) return;
+                updateFromClientX(e.clientX);
+            });
+            container.addEventListener('pointerup', () => { dragging = false; });
+            container.addEventListener('pointercancel', () => { dragging = false; });
+
+            // دسترس‌پذیری کیبورد
+            handle.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') { e.preventDefault(); setPosition(percent - 4); }
+                if (e.key === 'ArrowRight') { e.preventDefault(); setPosition(percent + 4); }
+            });
+            setPosition(50);
+        })();
+
+        /* ---------------------------------------------------------------------
+           ۷. برآوردگر هوشمند هزینه و زمان پروژه (Live Estimator)
+        ---------------------------------------------------------------------- */
+        const EST_CONFIG = {
+            types: {
+                corporate: { label: 'سایت شرکتی و معرفی برند', price: 14, days: 12 },
+                ecommerce: { label: 'فروشگاه اینترنتی اختصاصی', price: 24, days: 22 },
+                webapp:    { label: 'داشبورد و وب‌اپلیکیشن', price: 32, days: 26 },
+                landing:   { label: 'لندینگ‌پیج تبلیغاتی', price: 8, days: 7 }
+            },
+            addons: {
+                figma:     { label: 'طراحی UI/UX فیگما', price: 6, days: 4 },
+                bilingual: { label: 'دو زبانه فارسی/انگلیسی', price: 5, days: 3 },
+                seo:       { label: 'سئو فنی و سرعت ۹۵+', price: 4, days: 2 },
+                motion:    { label: 'انیمیشن‌های سه‌بعدی', price: 5.5, days: 3 },
+                admin:     { label: 'پنل مدیریت اختصاصی', price: 9, days: 6 },
+                payment:   { label: 'درگاه پرداخت و پیامک', price: 3.5, days: 2 }
+            }
+        };
+
+        let deliverySpeed = 'standard';
+        let lastEstimateSummary = { typeKey: 'corporate', text: '' };
+
+        function setDeliverySpeed(mode) {
+            deliverySpeed = mode;
+            const stdBtn = document.getElementById('speed-standard');
+            const vipBtn = document.getElementById('speed-vip');
+            if (mode === 'standard') {
+                stdBtn.className = 'px-5 py-3 rounded-xl text-xs sm:text-sm font-black bg-white text-petrol-deep shadow-md transition-all';
+                vipBtn.className = 'px-5 py-3 rounded-xl text-xs sm:text-sm font-bold text-slate-200 hover:text-white transition-all flex items-center justify-center gap-1.5';
+            } else {
+                vipBtn.className = 'px-5 py-3 rounded-xl text-xs sm:text-sm font-black bg-white text-petrol-deep shadow-md transition-all flex items-center justify-center gap-1.5';
+                stdBtn.className = 'px-5 py-3 rounded-xl text-xs sm:text-sm font-bold text-slate-200 hover:text-white transition-all';
+            }
+            updateEstimatorUI();
+        }
+
+        function updateEstimatorUI() {
+            const selectedRadio = document.querySelector('input[name="projectType"]:checked');
+            const typeKey = selectedRadio ? selectedRadio.value : 'corporate';
+            const typeObj = EST_CONFIG.types[typeKey];
+
+            // بروزرسانی ظاهر کارت‌های نوع پروژه
+            document.querySelectorAll('.est-type-card').forEach((card) => {
+                const input = card.querySelector('input');
+                const dot = card.querySelector('.est-radio-dot');
+                const ring = dot.parentElement;
+                const sub = card.querySelector('p:last-child');
+                if (input.checked) {
+                    card.className = 'est-type-card cursor-pointer rounded-2xl border-2 border-petrol-sky bg-white text-petrol-deep p-4 transition-all flex items-start gap-3 shadow-lg';
+                    ring.className = 'mt-0.5 w-5 h-5 rounded-full border-2 border-petrol-rich flex items-center justify-center shrink-0';
+                    dot.className = 'est-radio-dot w-2.5 h-2.5 rounded-full bg-petrol-rich';
+                    sub.className = 'text-xs text-slatearch-body mt-1';
+                } else {
+                    card.className = 'est-type-card cursor-pointer rounded-2xl border border-white/15 bg-white/8 text-white hover:bg-white/12 p-4 transition-all flex items-start gap-3';
+                    ring.className = 'mt-0.5 w-5 h-5 rounded-full border-2 border-slate-400 flex items-center justify-center shrink-0';
+                    dot.className = 'est-radio-dot w-2.5 h-2.5 rounded-full bg-transparent';
+                    sub.className = 'text-xs text-slate-300 mt-1';
+                }
+            });
+
+            // جمع قیمت و زمان افزودنی‌ها
+            let totalPrice = typeObj.price;
+            let totalDays = typeObj.days;
+            const chosenLabels = [typeObj.label];
+
+            document.querySelectorAll('.est-addon-card').forEach((card) => {
+                const cb = card.querySelector('input[type="checkbox"]');
+                const badge = card.querySelector('span:last-child');
+                if (cb.checked) {
+                    const addon = EST_CONFIG.addons[cb.value];
+                    totalPrice += addon.price;
+                    totalDays += addon.days;
+                    chosenLabels.push(addon.label);
+                    card.className = 'est-addon-card cursor-pointer rounded-2xl border border-petrol-sky/70 bg-white/14 p-3.5 flex items-center justify-between gap-3 transition-all';
+                    badge.className = 'text-[11px] text-petrol-sky font-bold shrink-0';
+                } else {
+                    card.className = 'est-addon-card cursor-pointer rounded-2xl border border-white/12 bg-white/6 hover:bg-white/10 p-3.5 flex items-center justify-between gap-3 transition-all';
+                    badge.className = 'text-[11px] text-slate-300 font-bold shrink-0';
+                }
+            });
+
+            // اعمال ضریب تحویل فوری VIP
+            const speedBadge = document.getElementById('est-speed-badge');
+            if (deliverySpeed === 'vip') {
+                totalPrice = totalPrice * 1.25;
+                totalDays = Math.max(5, Math.round(totalDays * 0.65));
+                speedBadge.textContent = 'تحویل فوری VIP';
+                speedBadge.className = 'px-2.5 py-1 rounded-lg bg-petrol-deep text-petrol-sky text-[11px] font-black';
+            } else {
+                speedBadge.textContent = 'زمان‌بندی استاندارد';
+                speedBadge.className = 'px-2.5 py-1 rounded-lg bg-slatearch-bg text-petrol-rich text-[11px] font-bold';
+            }
+
+            const minM = Math.round(totalPrice);
+            const maxM = Math.round(totalPrice * 1.18);
+            const priceRangeStr = `${toFaNum(minM)} تا ${toFaNum(maxM)} میلیون تومان`;
+            const daysStr = `${toFaNum(totalDays)} روز کاری`;
+
+            document.getElementById('est-price-range').textContent = priceRangeStr;
+            document.getElementById('est-days').textContent = daysStr;
+            document.getElementById('est-tags').innerHTML = chosenLabels.map((lbl) => `
+                <span class="px-2.5 py-1 rounded-lg bg-slatearch-bg border border-slatearch-border text-[11px] font-bold text-petrol-deep">${lbl}</span>
+            `).join('');
+
+            lastEstimateSummary = {
+                typeKey,
+                text: `سلام، مایل به دریافت مشاوره برای پروژه زیر هستم:\n• نوع پروژه: ${typeObj.label}\n• امکانات انتخابی: ${chosenLabels.slice(1).join('، ') || 'پکیج پایه'}\n• سرعت اجرا: ${deliverySpeed === 'vip' ? 'تحویل فوری VIP' : 'استاندارد'}\n• برآورد آنلاین: ${priceRangeStr} (حدود ${daysStr})`
+            };
+        }
+
+        document.querySelectorAll('#est-type-group input, #est-addons-group input').forEach((el) => {
+            el.addEventListener('change', updateEstimatorUI);
+        });
+        updateEstimatorUI();
+
+        function applyEstimateToContact() {
+            const typeSelect = document.getElementById('c-type');
+            const msgArea = document.getElementById('c-message');
+            const contactCard = document.getElementById('contact-card');
+            // در صورت ثبت قبلی، فرم را دوباره نمایش بده
+            resetContactForm(true);
+
+            if (typeSelect) typeSelect.value = lastEstimateSummary.typeKey;
+            if (msgArea) msgArea.value = lastEstimateSummary.text;
+
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+            if (contactCard) {
+                contactCard.classList.add('ring-4', 'ring-petrol-sky/50');
+                setTimeout(() => contactCard.classList.remove('ring-4', 'ring-petrol-sky/50'), 1800);
+            }
+            showToast('خلاصه برآورد شما به‌صورت خودکار در فرم تماس قرار گرفت');
+        }
+
+        /* ---------------------------------------------------------------------
+           ۸. روند ۴ مرحله‌ای تعاملی (Interactive Process Timeline)
+        ---------------------------------------------------------------------- */
+        const PROCESS_STEPS = [
+            {
+                step: 'مرحله ۰۱',
+                title: 'تحلیل کسب‌وکار، رقبا و استراتژی تجربه کاربری',
+                desc: 'پیش از هر طراحی، اهداف تجاری شما، نقاط قوت رقبا و رفتار مخاطب هدف را تحلیل می‌کنیم تا ساختار صفحات دقیقاً در مسیر تبدیل بازدیدکننده به مشتری چیده شود.',
+                duration: '۲ تا ۴ روز کاری',
+                deliverables: ['نقشه سایت (Sitemap) و معماری اطلاعات', 'تحلیل نقاط قوت و مزیت رقابتی برند', 'تعیین شاخص‌های کلیدی فروش و نرخ تبدیل']
+            },
+            {
+                step: 'مرحله ۰۲',
+                title: 'طراحی رابط کاربری لوکس و پیش‌نمایش تعاملی در فیگما',
+                desc: 'پالت رنگی، تایپوگرافی فارسی و تمامی صفحات در نسخه‌های دسکتاپ و موبایل طراحی شده و پیش‌نمایش زنده برای بررسی و تایید نهایی در اختیار شما قرار می‌گیرد.',
+                duration: '۴ تا ۸ روز کاری',
+                deliverables: ['طراحی اختصاصی صفحه اصلی و صفحات داخلی', 'دیزاین‌سیستم یکپارچه و کتابخانه کامپوننت‌ها', 'پروتوتایپ کلیک‌پذیر برای بررسی پیش از کدنویسی']
+            },
+            {
+                step: 'مرحله ۰۳',
+                title: 'پیاده‌سازی تمیز، کدنویسی مدرن و انیمیشن‌های ۶۰ فریم',
+                desc: 'طرح تاییدشده با کدنویسی ماژولار، سبک و کاملاً واکنش‌گرا پیاده‌سازی می‌شود و انیمیشن‌های نرم و تعاملی بدون افت سرعت به آن اضافه می‌گردند.',
+                duration: '۶ تا ۱۴ روز کاری',
+                deliverables: ['کدنویسی استاندارد و توسعه‌پذیر با انطباق پیکسلی', 'اجرای انیمیشن‌های تعاملی و ریزتعامل‌های کاربری', 'بهینه‌سازی کامل نمایش در موبایل، تبلت و دسکتاپ']
+            },
+            {
+                step: 'مرحله ۰۴',
+                title: 'تست سرعت گوگل، سئو فنی، استقرار و تحویل نهایی',
+                desc: 'وب‌سایت از نظر سرعت بارگذاری، استانداردهای سئو فنی، امنیت و نمایش در مرورگرهای مختلف تست شده و همراه با آموزش کامل و پشتیبانی تحویل شما می‌شود.',
+                duration: '۲ تا ۳ روز کاری',
+                deliverables: ['گزارش رسمی Google Lighthouse بالای ۹۵', 'تنظیم کامل ساختار متاتگ‌ها و سئو فنی', 'تحویل سورس کد، آموزش و ۳ ماه پشتیبانی رایگان']
+            }
+        ];
+
+        function selectProcessStep(index) {
+            const data = PROCESS_STEPS[index];
+            const bar = document.getElementById('process-progress-bar');
+            const detailCard = document.getElementById('process-detail-card');
+            if (bar) bar.style.width = `${(index / (PROCESS_STEPS.length - 1)) * 100}%`;
+
+            document.querySelectorAll('.process-step-btn').forEach((btn, idx) => {
+                const num = btn.querySelector('.step-num');
+                if (idx === index) {
+                    btn.className = 'process-step-btn text-right md:text-center p-4 rounded-2xl bg-white border-2 border-petrol-rich shadow-soft transition-all flex md:flex-col items-center gap-4 md:gap-3';
+                    num.className = 'step-num w-12 h-12 rounded-2xl bg-petrol-deep text-white font-black text-lg flex items-center justify-center shrink-0 transition-colors';
+                } else if (idx < index) {
+                    btn.className = 'process-step-btn text-right md:text-center p-4 rounded-2xl bg-white border border-petrol-mid/40 transition-all flex md:flex-col items-center gap-4 md:gap-3';
+                    num.className = 'step-num w-12 h-12 rounded-2xl bg-petrol-rich text-white font-black text-lg flex items-center justify-center shrink-0 transition-colors';
+                } else {
+                    btn.className = 'process-step-btn text-right md:text-center p-4 rounded-2xl bg-white/80 border border-slatearch-border hover:bg-white transition-all flex md:flex-col items-center gap-4 md:gap-3';
+                    num.className = 'step-num w-12 h-12 rounded-2xl bg-slatearch-bg text-petrol-rich font-black text-lg flex items-center justify-center shrink-0 transition-colors';
+                }
+            });
+
+            detailCard.innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center fade-slide-up">
+                    <div class="lg:col-span-7">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-slatearch-bg text-petrol-rich text-xs font-extrabold">
+                            <span>${data.step}</span>
+                            <span>•</span>
+                            <span>زمان تقریبی: ${data.duration}</span>
+                        </div>
+                        <h3 class="mt-4 text-xl sm:text-2xl font-black text-petrol-deep">${data.title}</h3>
+                        <p class="mt-3 text-sm sm:text-base text-slatearch-body leading-relaxed">${data.desc}</p>
+                    </div>
+                    <div class="lg:col-span-5 rounded-2xl bg-slatearch-bg border border-slatearch-border p-5 space-y-3">
+                        <p class="text-xs font-black text-petrol-deep">خروجی‌های این مرحله:</p>
+                        ${data.deliverables.map((d) => `
+                            <div class="flex items-start gap-2.5 text-xs sm:text-sm text-slatearch-dark font-medium">
+                                <span class="mt-0.5 w-5 h-5 rounded-md bg-petrol-deep text-petrol-sky flex items-center justify-center shrink-0">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                                </span>
+                                <span>${d}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        selectProcessStep(0);
+
+        /* ---------------------------------------------------------------------
+           ۹. آکاردئون سوالات متداول (Smooth FAQ Accordion)
+        ---------------------------------------------------------------------- */
+        document.querySelectorAll('.faq-trigger').forEach((trigger) => {
+            trigger.addEventListener('click', () => {
+                const item = trigger.closest('.faq-item');
+                const isOpen = item.getAttribute('data-open') === 'true';
+                document.querySelectorAll('.faq-item').forEach((el) => el.setAttribute('data-open', 'false'));
+                if (!isOpen) item.setAttribute('data-open', 'true');
+            });
+        });
+
+        /* ---------------------------------------------------------------------
+           ۱۰. اعتبارسنجی فرم تماس و تاییدیه ارسال بدون بک‌اند
+        ---------------------------------------------------------------------- */
+        const contactForm = document.getElementById('contact-form');
+        const contactSuccess = document.getElementById('contact-success');
+
+        function setFieldError(id, show) {
+            const errEl = document.getElementById('err-' + id);
+            const inpEl = document.getElementById('c-' + id);
+            if (!errEl || !inpEl) return;
+            errEl.classList.toggle('hidden', !show);
+            inpEl.classList.toggle('border-rose-500', show);
+        }
+
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nameVal = document.getElementById('c-name').value.trim();
+            const phoneVal = document.getElementById('c-phone').value.trim();
+            const msgVal = document.getElementById('c-message').value.trim();
+
+            const nameInvalid = nameVal.length < 2;
+            const phoneInvalid = phoneVal.length < 2;
+            const msgInvalid = msgVal.length < 8;
+
+            setFieldError('name', nameInvalid);
+            setFieldError('phone', phoneInvalid);
+            setFieldError('message', msgInvalid);
+
+            if (nameInvalid || phoneInvalid || msgInvalid) {
+                showToast('لطفاً فیلدهای ستاره‌دار را به‌درستی تکمیل کنید');
+                return;
+            }
+
+            // حالت بارگذاری (Loading State)
+            const btn = document.getElementById('c-submit-btn');
+            const btnText = document.getElementById('c-submit-text');
+            const spinner = document.getElementById('c-submit-spinner');
+            btn.disabled = true;
+            btnText.textContent = 'در حال ثبت درخواست...';
+            spinner.classList.remove('hidden');
+
+            setTimeout(() => {
+                btn.disabled = false;
+                btnText.textContent = 'ارسال درخواست و دریافت مشاوره رایگان';
+                spinner.classList.add('hidden');
+
+                const randomCode = Math.floor(1000 + Math.random() * 9000);
+                document.getElementById('tracking-code').textContent = 'ARS-' + toFaNum(randomCode);
+                document.getElementById('success-greeting').textContent =
+                    `${nameVal} عزیز، سپاس از اعتماد شما به آرسان استودیو. درخواست شما ثبت شد و کارشناس ارشد ما در کمتر از ۲ ساعت کاری با شما ارتباط خواهد گرفت.`;
+
+                contactForm.classList.add('hidden');
+                contactSuccess.classList.remove('hidden');
+                showToast('درخواست مشاوره شما با موفقیت ثبت شد');
+            }, 900);
+        });
+
+        function resetContactForm(silent = false) {
+            contactForm.reset();
+            setFieldError('name', false);
+            setFieldError('phone', false);
+            setFieldError('message', false);
+            contactSuccess.classList.add('hidden');
+            contactForm.classList.remove('hidden');
+            if (!silent) showToast('فرم برای ثبت درخواست جدید آماده است');
+        }
+    </script>
+</body>
+</html>
